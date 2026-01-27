@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../assets/css/auth.css" />
+    <title>Login & Register</title>
+  </head>
+  <body>
+    <div class="wrapper">
+      <nav class="nav">
+        <div class="nav-logo">
+          <p>E-commerce</p>
+        </div>
+        <div class="nav-button">
+          <button class="btn white-btn" id="loginBtn" onclick="login()">
+            sign In
+          </button>
+          <button class="btn" id="registerBtn" onclick="register()">
+            Sign Up
+          </button>
+        </div>
+      </nav>
+      <!-- ----------------------Form box -->
+      <div class="form-box">
+        <!-- ------------Login Form -->
+        <div class="login-container" id="login">
+          <div class="top">
+            <span
+              >Don't have account?
+              <a href="#" onclick="register()">Sign Up</a></span
+            >
+            <header>Login</header>
+          </div>
+
+          <div class="input-box">
+            <input
+              type="text"
+              class="input-field"
+              placeholder="Email"
+              id="loginEmailField"
+            />
+            <i class="bx bx-user"></i>
+          </div>
+          <div class="input-box">
+            <input
+              type="password"
+              class="input-field"
+              placeholder="Password"
+              id="loginPasswordField"
+            />
+            <i class="bx bx-lock-alt"></i>
+          </div>
+          <div class="input-box">
+            <input
+              type="submit"
+              class="submit"
+              value="Sign In"
+              id="loginSubmitBtn"
+            />
+          </div>
+          <div class="two-col">
+            <div class="one">
+              <input type="checkbox" id="login-check" />
+              <label for="login-check">Remember Me</label>
+            </div>
+            <div class="two">
+              <label>
+                <a href="#"> Forget Password? </a>
+              </label>
+            </div>
+          </div>
+        </div>
+        <!-- ------------Registration Form -->
+        <div class="register-container" id="register">
+          <div class="top">
+            <span
+              >Have an account? <a href="#" onclick="login()">Login</a></span
+            >
+            <header>Sign Up</header>
+          </div>
+          <div class="two-forms">
+            <div class="input-box">
+              <input
+                type="text"
+                class="input-field"
+                placeholder="Firstname"
+                id="registerFirstNameFiled"
+              />
+              <i class="bx bx-user"></i>
+            </div>
+            <div class="input-box">
+              <input
+                type="text"
+                class="input-field"
+                placeholder="Lastname"
+                id="registerLastNameFiled"
+              />
+              <i class="bx bx-user"></i>
+            </div>
+          </div>
+          <div class="input-box">
+            <input
+              type="text"
+              class="input-field"
+              placeholder="Email"
+              id="registerEmailFiled"
+            />
+            <i class="bx bx-envelope"></i>
+          </div>
+          <div class="input-box">
+            <input
+              type="password"
+              class="input-field"
+              placeholder="Password"
+              id="registerPasswordFiled"
+            />
+            <i class="bx bx-lock-alt"></i>
+          </div>
+          <div class="input-box">
+            <input
+              type="submit"
+              class="submit"
+              value="Register"
+              id="registerSubmitBtn"
+            />
+          </div>
+          <div class="two-col">
+            <div class="one">
+              <input type="checkbox" id="register-check" />
+              <label for="register-check">Remember Me</label>
+            </div>
+            <div class="two">
+              <label>
+                <a href="#"> Terms &condition </a>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script type="module" src="../js/auth/login.js"></script>
+  </body>
+</html>
