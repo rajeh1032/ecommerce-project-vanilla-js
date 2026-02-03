@@ -222,6 +222,17 @@ a.active {
 .next-arrow { right: 20px; }
 .material-icons { font-size: 30px; }
 
+.slide {
+    display: none;
+    width: 100%;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.slide.active {
+    display: flex;
+    animation: fadeIn 0.8s;
+}
+
 /* ----------------------- Categories ------------------------- */
 
 .categories-section {

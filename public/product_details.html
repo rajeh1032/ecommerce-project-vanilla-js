@@ -3,15 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aladdin - Products</title>
+    <title>Aladdin - Product Details</title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="../assets/css/product.css">
     <link rel="stylesheet" href="../assets/css/main.css">
+    
 
 </head>
 <body>
 
-<header class="main-header">
+    <header class="main-header">
         <nav class="navbar">
             <div class="logo">
                 <a href="index.html">
@@ -39,7 +40,7 @@
 
             <ul class="nav-links" id="nav-links">
                 <li><a href="index.html">Home</a></li>
-                <li><a href="product.html" class="active">Shop</a></li>
+                <li><a href="product.html">Shop</a></li>
                 <li id="auth-links"><a href="profile.html">My Profile</a></li>
                 <li>
                     <a href="cart.html" class="cart-link">
@@ -56,20 +57,38 @@
         </nav> 
     </header>
 
-    <main class="product-page-container">
-        <aside class="sidebar">
-            <h3 class="sidebar-title">Categories</h3>
-            <ul class="category-list">
-            </ul>
-        </aside>
-        <section class="products-content">
-            <header class="products-header">
-                <h2 id="current-category">Loading...</h2>
-            </header>
-            <div class="products-grid">
+<main class="product-details-page">
+    <div class="container">
+        <div class="product-main-info">
+            <div class="product-gallery">
+                <div class="main-image"></div>
             </div>
-        </section>
-    </main>
+
+            <div class="product-specs">
+                <h1 class="details-title" id="product-name"></h1>
+                <div class="status-badge" id="product-status"></div>
+                <p class="details-price" id="product-price"></p>         
+                <div class="description-box">
+                    <h3>Description</h3>
+                    <p class="details-description" id="product-desc">
+                    </p>
+                </div>
+
+                <div class="purchase-actions">
+                    <div class="quantity-selector">
+                        <button class="qty-btn minus">-</button>
+                        <input type="number" value="1" min="1" id="qty-input" readonly>
+                        <button class="qty-btn plus">+</button>
+                    </div>  
+                    <button class="add-to-cart-btn">
+                        Add to Cart
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
 <footer class="main-footer">
     <div class="footer-container">
         <div class="footer-about">
@@ -136,18 +155,17 @@
             </ul>
         </div>
     </div>
-
     <div class="footer-bottom">
         <p>Copyright © 2026 Aladdin Templates | All Rights Reserved | <a href="#">Terms and Conditions</a> | <a href="#">Privacy Policy</a></p>
     </div>
 </footer>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
-    <script type="module" src="../js/config/firebase.js"></script>
-    <script type="module" src="../js/services/category.service.js"></script>
-    <script type="module" src="../js/ui/renderCategories.js"></script>
-    <script type="module" src="../js/main.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
+<script type="module" src="../js/config/firebase.js"></script>
+<script type="module" src="../js/services/product-details.service.js"></script>
+<script type="module" src="../js/ui/renderProductDetails.js"></script>
+<script type="module" src="../js/main.js"></script>
 </body>
 </html>
