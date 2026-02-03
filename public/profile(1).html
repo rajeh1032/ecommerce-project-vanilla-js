@@ -31,21 +31,6 @@
             color: white;
         }
 
-        .profile-image {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            margin: 0 auto 20px;
-            overflow: hidden;
-            border: 4px solid rgba(255,255,255,0.3);
-        }
-
-        .profile-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
         .profile-name {
             font-size: 24px;
             font-weight: 500;
@@ -208,14 +193,20 @@
             background-color: white;
         }
 
-        .gender-option:hover {
+        .gender-option:hover:not(.selected) {
             border-color: #4a919e;
+            background-color: #f0f7f8;
         }
 
         .gender-option.selected {
             background-color: #4a919e;
             border-color: #4a919e;
             color: white;
+        }
+
+        .gender-option.selected:hover {
+            background-color: #3d7e89;
+            border-color: #3d7e89;
         }
 
         .gender-icon {
@@ -299,7 +290,7 @@
         }
             .hidden-item {
                 display: none;
-}
+        }
 
     </style>
 </head>
@@ -307,14 +298,6 @@
   <aside class="sidebar">
 
   <div class="profile-section">
-
-    <div class="profile-image">
-      <img
-        id="profileImage"
-        src="../assets/images/default-avatar.png"
-        alt="Profile"
-      >
-    </div>
 
     <div class="profile-name" id="sidebarUserName">
       User Name
@@ -351,9 +334,9 @@
     </li>
 
     <li class="menu-item">
-      <a href="wishlist.html" class="menu-link">
+      <a href="favourite.html" class="menu-link">
         <span class="menu-item-icon">❤️</span>
-        <span class="menu-item-text">Wish List</span>
+        <span class="menu-item-text">Favourite Items</span>
       </a>
     </li>
 
@@ -377,19 +360,20 @@
       <span class="menu-item-text">Need Help</span>
     </li>
 
-    <li class="menu-item">
+    <li class="menu-item" id="logoutBtn">
       <span class="menu-item-icon">🚪</span>
       <span class="menu-item-text">Sign Out</span>
     </li>
 
-  </ul>
+
+   </ul>
 
 </aside>
 
 
     <main class="main-content">
         <h1 class="form-title">Personal Information</h1>
-        
+        <form id="personalInfoForm">
            <div class="form-group">
               <label class="form-label">Full Name</label>
               <input type="text" id="fullName" class="form-input">
@@ -398,7 +382,7 @@
 
             <div class="form-group">
                 <label class="form-label" for="email">Email Address</label>
-                <input type="email" id="email" class="form-input" placeholder="">
+                <input type="email" id="email" class="form-input" readonly>
             </div>
 
             <div class="form-group">
@@ -420,13 +404,14 @@
                 </div>
 
 
-            <div class="form-group">
+            <div class="form-group hidden-item">
+                <label class="form-label">Gender <span style="color: #e74c3c;">*</span></label>
                 <div class="gender-selection">
                     <div class="gender-option" data-gender="male">
                         <div class="gender-icon">♂</div>
                         <div class="gender-label">Male</div>
                     </div>
-                    <div class="gender-option selected" data-gender="female">
+                    <div class="gender-option" data-gender="female">
                         <div class="gender-icon">♀</div>
                         <div class="gender-label">Female</div>
                     </div>
@@ -444,82 +429,135 @@
         </form>
     </main>
 
-    <script>
-   import { auth } from "./config/firebase.js";
-import { onAuthStateChanged } from
-  "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth.js";
-import { getUserData, saveUserData } from
-  "./services/user.service.js";
+<script type="module">
 
-const form = document.getElementById("personalInfoForm");
-const genderOptions = document.querySelectorAll(".gender-option");
+    import { auth } from "../js/config/firebase.js";
+    import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth.js";
+    import { getUserData, saveUserData } from "../js/services/user.service(1).js";
 
-let selectedGender = ""; // هنخزن فيها male / female
+    // متغير للـ gender المختار
+    let selectedGender = undefined; // المستخدم لازم يختار بنفسه
 
-// 🧠 اختيار الـ gender
-genderOptions.forEach(option => {
-  option.addEventListener("click", () => {
-    genderOptions.forEach(opt => opt.classList.remove("selected"));
-    option.classList.add("selected");
-    selectedGender = option.dataset.gender;
-  });
-});
+    // ────────────────────────────────────────────────
+    //    Gender selection handler (قبل كل حاجة عشان يشتغل فوراً)
+    // ────────────────────────────────────────────────
+    const genderOptions = document.querySelectorAll(".gender-option");
+    
+    genderOptions.forEach(option => {
+        option.addEventListener("click", function() {
+            console.log("Gender clicked:", this.getAttribute("data-gender"));
+            // إزالة selected من كل العناصر
+            genderOptions.forEach(opt => opt.classList.remove("selected"));
+            // إضافة selected للعنصر المختار
+            this.classList.add("selected");
+            // حفظ القيمة
+            selectedGender = this.getAttribute("data-gender");
+            console.log("Selected gender:", selectedGender);
+        });
+    });
 
-onAuthStateChanged(auth, async (user) => {
-  if (!user) return;
+    // ────────────────────────────────────────────────
+    //    زر Sign Out (يشتغل قبل تسجيل الدخول)
+    // ────────────────────────────────────────────────
+    const logoutBtn = document.getElementById("logoutBtn");
 
-  // 📥 بيانات اليوزر من Firestore
-  const data = await getUserData(user.uid);
-
-  // 🧾 نحط الداتا في الفورم
-  if (data) {
-    document.getElementById("fullName").value = data.name || "";
-    document.getElementById("email").value = data.email || "";
-    document.getElementById("address").value = data.address || "";
-    document.getElementById("phone").value = data.phone || "";
-
-    // 👤 Gender
-    if (data.gender) {
-      selectedGender = data.gender;
-      genderOptions.forEach(opt => {
-        if (opt.dataset.gender === data.gender) {
-          opt.classList.add("selected");
-        } else {
-          opt.classList.remove("selected");
+    logoutBtn.addEventListener("click", async () => {
+        try {
+            await signOut(auth);
+            window.location.href = "login.html";
+        } catch (err) {
+            console.error("Sign-out error →", err);
+            alert("حصل مشكلة في تسجيل الخروج\n" + err.message);
         }
-      });
-    }
-  }
+    });
 
-  // 🧍‍♀️ اسم اليوزر في الـ sidebar
-  document.getElementById("sidebarUserName").textContent =
-    data?.name || user.email;
+    // ────────────────────────────────────────────────
+    //    Authentication state change
+    // ────────────────────────────────────────────────
+    onAuthStateChanged(auth, async (user) => {
+                // لو اليوزر مش مسجل دخول أصلاً (مفيش Firebase Auth) → روح على login
+        if (!user) {
+            window.location.href = "login.html";
+            return;
+        }
 
-  // 🖼️ صورة اليوزر
-  const profileImg = document.getElementById("profileImage");
+        if (user) {
+            try {
+                const data = await getUserData(user.uid);
 
-  if (user.photoURL) {
-    profileImg.src = user.photoURL;
-  } else {
-    profileImg.src = "../assets/images/default-avatar.png";
-  }
+                console.log("User data from Firebase:", data); // للتأكد من البيانات
 
-  // 💾 حفظ الداتا
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
+                // ملء الحقول بالبيانات من Firebase (لو موجودة)
+                // لو مفيش بيانات → الحقول هتفضل فاضية واليوزر يملاها
+                document.getElementById("fullName").value = data?.name || "";
+                document.getElementById("email").value = user.email || data?.email || "";
+                document.getElementById("phone").value = data?.phoneNumber || data?.phone || "";
+                document.getElementById("address").value = data?.address || "";
 
-    const userData = {
-      name: document.getElementById("fullName").value,
-      email: document.getElementById("email").value,
-      address: document.getElementById("address").value,
-      phone: document.getElementById("phone").value,
-      gender: selectedGender || null
-    };
+                // تحديد الـ gender المحفوظ
+                if (data?.gender) {
+                    selectedGender = data.gender;
+                    // الوصول للـ genderOptions اللي معرفة برة
+                    const allGenderOptions = document.querySelectorAll(".gender-option");
+                    allGenderOptions.forEach(option => {
+                        if (option.getAttribute("data-gender") === data.gender) {
+                            option.classList.add("selected");
+                        } else {
+                            option.classList.remove("selected");
+                        }
+                    });
+                }
 
-    await saveUserData(user.uid, userData);
-    alert("Profile saved successfully ❤️");
-  });
-});
+                // Sidebar information
+                document.getElementById("sidebarUserName").textContent = data?.name || user.email;
+
+            } catch (err) {
+                console.error("Error loading user data:", err);
+                // حتى لو حصل error → اليوزر يقدر يملأ البيانات عادي
+            }
+        }
+
+        // ──── Form Submit Handler ──────
+        const form = document.getElementById("personalInfoForm");
+
+        if (!form) {
+            console.error("Form element with id 'personalInfoForm' not found!");
+            return;
+        }
+
+        form.addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            if (!user) {
+                alert("You must be logged in to save your profile.");
+                return;
+            }
+
+            const userData = {
+                name   : document.getElementById("fullName").value.trim(),
+                email  : document.getElementById("email").value,
+                phoneNumber: document.getElementById("phone").value.trim(), // تغيير من phone إلى phoneNumber
+                address: document.getElementById("address").value.trim()
+            };
+
+            // إضافة gender فقط لو كان موجود (في حالة إظهاره مستقبلاً)
+            if (selectedGender) {
+                userData.gender = selectedGender;
+            }
+
+            try {
+                await saveUserData(user.uid, userData);
+                alert("Profile saved successfully ❤️");
+                
+                // تحديث الاسم في الـ sidebar
+                document.getElementById("sidebarUserName").textContent = userData.name || user.email;
+                
+            } catch (err) {
+                console.error("Save error:", err);
+                alert("حصل خطأ أثناء الحفظ، جربي تاني\n" + err.message);
+            }
+        });
+    });
 
 
 </script>

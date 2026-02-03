@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Orders - Aladdin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/orders.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="page-header">
+            <h1 class="page-title">My Orders</h1>
+            <p class="page-subtitle">Track and manage all your orders</p>
+        </div>
+
+        <!-- Filter Tabs -->
+        <div class="filter-tabs">
+            <button class="filter-tab" data-status="all">All</button>
+            <button class="filter-tab" data-status="pending">Pending</button>
+            <button class="filter-tab" data-status="processing">Processing</button>
+            <button class="filter-tab" data-status="completed">Completed</button>
+            <button class="filter-tab" data-status="cancelled">Cancelled</button>
+        </div>
+
+        <!-- Orders list -->
+        <div class="orders-container" id="ordersContainer">
+            <div class="loading-spinner">
+                <div class="spinner"></div>
+                <p>Loading your orders...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal-overlay" id="modalOverlay"></div>
+    <div class="order-modal" id="orderModal">
+        <div class="modal-header">
+            <h2 class="modal-title">Order Details</h2>
+            <button class="modal-close" id="modalClose">&times;</button>
+        </div>
+        <div class="modal-body" id="modalBody"></div>
+    </div>
+
+    <script type="module" src="../js/orders.js"></script>
+</body>
+</html>

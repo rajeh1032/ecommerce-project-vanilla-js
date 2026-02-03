@@ -1,10 +1,5 @@
 // js/auth/login.js
-import { auth } from "../config/firebase.js";
-
-import {
-  signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
-} from "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth.js";
+import { auth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "../config/firebase.js";
 
 // Elements
 const loginEmail = document.getElementById("loginEmailField");
