@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../assets/css/admin.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <title>Dashboard</title>
+  </head>
+  <body>
+    <div class="menu">
+      <ul>
+        <li class="profile">
+          <!-- <div class="img-box">
+            <img src="ahmed.jpg" alt="" />
+          </div> -->
+          <h2>Ahmed Rajeh</h2>
+        </li>
+        <li>
+          <a href="#" id="homePageContent">
+            <i class="fas fa-home"></i>
+            <p>dashboard</p>
+          </a>
+        </li>
+        <li>
+          <a href="#" id="usersPageContent">
+            <i class="fas fa-user-group"></i>
+            <p>users</p>
+          </a>
+        </li>
+        <li>
+          <a href="#" id="categoryPageContent">
+            <i class="fas fa-chart-pie"></i>
+            <p>Category</p>
+          </a>
+        </li>
+        <li>
+          <a href="#" id="productPageContent">
+            <i class="fas fa-table"></i>
+            <p>products</p>
+          </a>
+        </li>
+
+        <li>
+          <a href="#" id="orderPageContent">
+            <i class="fa-solid fa-truck"></i>
+            <p>Orders</p>
+          </a>
+        </li>
+        <li class="log-out" id="usersLink">
+          <a href="#">
+            <i class="fas fa-sign-out"></i>
+            <p>logout</p>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div class="content" id="content"></div>
+    <!-- Edit User Modal -->
+    <div class="modal-overlay" id="editUserModal">
+      <div class="modal-box">
+        <div class="modal-header">
+          <h2>Edit User</h2>
+          <span class="close-user-modal">&times;</span>
+        </div>
+
+        <form class="edit-user-form">
+          <div class="form-group">
+            <label>name</label>
+            <input type="text" name="name" placeholder="User name" required />
+          </div>
+
+          <div class="form-group">
+            <label>email</label>
+            <input type="email" name="email" readonly />
+          </div>
+
+          <div class="form-group">
+            <label>phone</label>
+            <input type="tel" name="phone" placeholder="phone number" />
+          </div>
+
+          <div class="form-group">
+            <label>address</label>
+            <input type="text" name="address" placeholder="User address" />
+          </div>
+
+          <div class="form-group">
+            <label>role</label>
+            <select name="role">
+              <option value="user">user</option>
+              <option value="admin">admin</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>status</label>
+            <select name="status">
+              <option value="active">active</option>
+              <option value="inactive">inactive</option>
+            </select>
+          </div>
+
+          <button type="submit" class="btn-save">Save Changes</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Edit / Add Category Modal -->
+    <div class="modal-overlay" id="categoryModal" >
+      <div class="modal-box">
+        <div class="modal-header">
+          <h2 id="categoryModalTitle">Edit Category</h2>
+          <span class="close-category-modal">&times;</span>
+        </div>
+
+        <form class="edit-user-form" id="categoryForm">
+          <div class="form-group">
+            <label>Category Name</label>
+            <input
+              type="text"
+              id="categoryName"
+              placeholder="Category name"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label>Description</label>
+            <input
+              type="text"
+              id="categoryDesc"
+              placeholder="Category description"
+            />
+          </div>
+
+          <div class="form-group">
+            <label>Category Image</label>
+            <input type="file" id="categoryImage" accept="image/*" />
+          </div>
+
+          <button type="submit" class="btn-save">Save Category</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Edit / Add Product Modal -->
+    <div class="modal-overlay" id="productModal" ">
+      <div class="modal-box">
+        <div class="modal-header">
+          <h2 id="productModalTitle">Edit Product</h2>
+          <span class="close-product-modal">&times;</span>
+        </div>
+
+        <form class="edit-user-form" id="productForm">
+          <div class="form-group">
+            <label>Product Name</label>
+            <input
+              type="text"
+              id="productName"
+              placeholder="product name"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label>Category</label>
+            <select id="productcategory">
+              <option>Category1</option>
+              <option>out Category1</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Product Image</label>
+            <input type="file" id="productImage" accept="image/*" />
+          </div>
+
+          <div class="form-group">
+            <label>Price</label>
+            <input type="text" id="productPrice" />
+          </div>
+          <div class="form-group">
+            <label>Quantity</label>
+            <input type="text" id="productQuantity" />
+          </div>
+          <div class="form-group">
+            <label>Status</label>
+            <select id="productStatus">
+              <option>in-stock</option>
+              <option>out-stock</option>
+            </select>
+          </div>
+
+          <button type="submit" class="btn-save">Save Category</button>
+        </form>
+      </div>
+    </div>
+
+<!-- Edit Order Modal -->
+<div class="modal-overlay" id="orderModal" >
+  <div class="modal-box">
+    <div class="modal-header">
+      <h2 id="orderModalTitle">Edit Order Status</h2>
+      <span class="close-order-modal">&times;</span>
+    </div>
+
+    <form class="edit-user-form" id="orderForm">
+      <div class="form-group">
+        <label>Order Status</label>
+        <select id="orderStatus">
+          <option>pending</option>
+          <option>processing</option>
+          <option>canceled</option>
+          <option>completed</option>
+        </select>
+      </div>
+
+      <button type="submit" class="btn-save">Save Status</button>
+    </form>
+  </div>
+</div>
+
+<div class="loading-overlay" id="loadingOverlay">
+
+  <div class="spinner-container">
+    <div class="circular-spinner"></div>
+    <p class="loading-text">Loading...</p>
+  </div>
+</div>
+<script type="module" src="../js/admin/adminHome.js"></script>
+
+</html>

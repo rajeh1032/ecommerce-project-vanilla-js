@@ -1,17 +1,45 @@
 // js/firebase/firebaseService.js
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
 import { getAuth } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth.js";
+import {
+  getFirestore,
+  collection,
+  getDocs,
+  getDoc,
+  doc,
+  addDoc,
+  updateDoc,
+  deleteDoc,
+  query,
+  orderBy,
+  where,
+} from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCnM5ndqZOyosxKtyrmfMAhIRMuymDDAqM",
-  authDomain: "khordaclick.firebaseapp.com",
-  projectId: "khordaclick",
-  storageBucket: "khordaclick.firebasestorage.app",
-  messagingSenderId: "941077442352",
-  appId: "1:941077442352:web:461389879b9ef02a02a2f5",
+  apiKey: "AIzaSyBrUTrH5p2T6HkixfJOATxW1YJrajVNSjQ",
+  authDomain: "aladdin-40dcd.firebaseapp.com",
+  projectId: "aladdin-40dcd",
+  storageBucket: "aladdin-40dcd.firebasestorage.app",
+  messagingSenderId: "823835108820",
+  appId: "1:823835108820:web:d769d88543e20fae46a241",
+  measurementId: "G-E4QSJ9DEFY",
 };
 
 const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 const auth = getAuth(app);
 
-export { auth };
+export {
+  auth,
+  db,
+  collection,
+  getDocs,
+  getDoc,
+  doc,
+  addDoc,
+  updateDoc,
+  deleteDoc,
+  query,
+  orderBy,
+  where,
+};
