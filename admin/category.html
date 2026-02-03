@@ -1,33 +1,29 @@
 <div class="title-info">
-  <p>Product</p>
-  <i class="fas fa-table"></i>
+  <p>Category</p>
+  <i class="fas fa-chart-pie"></i>
 </div>
 
 <!-- Search and Add Category Controls -->
 <div class="category-controls">
   <input type="text" placeholder="Search categories..." />
-
-  <button id="addProductBtn"><i class="fas fa-plus"></i> Add Product</button>
+  <button id="addCategoryBtn"><i class="fas fa-plus"></i> Add Category</button>
 </div>
 
 <table>
   <thead>
     <tr>
-      <th>Product</th>
       <th>Category</th>
+      <th>Description</th>
       <th>Image</th>
-      <th>Price</th>
-      <th>Quantity</th>
-      <th>status</th>
       <th>Edit</th>
       <th>Delete</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>ورق مقوي</td>
+      <td>كرتون</td>
       <td>
-        <span>كرتون</span>
+        <span class="price"> "كرتون قديم " </span>
       </td>
       <td>
         <img
@@ -36,13 +32,14 @@
           class="categoryImg"
         />
       </td>
-      <td>
-        <span class="price"> $400</span>
-      </td>
-      <td><span class="count">564</span></td>
-      <td><span class="count">in stock</span></td>
 
-      <td><i class="fa-solid fa-pen price edit-product"></i></td>
+      <td>
+        <i
+          class="fa-solid fa-pen price edit-category"
+          data-name="كرتون"
+          data-desc="كرتون قديم"
+        ></i>
+      </td>
       <td><i class="fa fa-trash delete"></i></td>
     </tr>
   </tbody>

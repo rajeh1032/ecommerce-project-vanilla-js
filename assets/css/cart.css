@@ -1,0 +1,134 @@
+.cart {
+    max-width: 1000px;
+    margin: 50px auto;
+    padding: 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.cart-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 25px;
+    color: #333;
+}
+
+.table {
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.cart-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.cart-table th {
+    text-align: left;
+    padding: 15px 20px;
+    color: #005873;
+    font-weight: 600;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.cart-table td {
+    padding: 20px;
+    border-bottom: 1px solid #f0f0f0;
+    vertical-align: middle;
+    color: #555;
+}
+
+.info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.info img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 5px;
+    background-color: #f8f9fa;
+}
+
+.info p {
+    margin: 0;
+    font-size: 0.95rem;
+    max-width: 180px;
+    line-height: 1.4;
+}
+
+.trash {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    background-color: #b02a2a;
+    mask: url('https://cdn-icons-png.flaticon.com/512/3096/3096673.png') no-repeat center;
+    -webkit-mask: url('https://cdn-icons-png.flaticon.com/512/3096/3096673.png') no-repeat center;
+    mask-size: contain;
+    cursor: pointer;
+}
+
+.cart-footer {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 25px;
+    margin-top: 30px;
+}
+
+.total {
+    font-size: 1.1rem;
+    color: #333;
+}
+
+.total strong {
+    font-size: 1.6rem;
+    margin-left: 10px;
+    color: #000;
+}
+
+.order {
+    background-color: #005873;
+    color: white;
+    border: none;
+    padding: 12px 40px;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.order:hover {
+    background-color: #003747;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.order:active {
+    transform: translateY(0);
+}
+
+.qty-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    justify-content: center;
+}
+.qty-controls button {
+    background: #005873;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+}
+.delete-btn {
+    background: none;
+    border: none;
+    color: #ff4d4d;
+    cursor: pointer;
+}
