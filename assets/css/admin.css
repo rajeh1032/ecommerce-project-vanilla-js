@@ -114,7 +114,6 @@ ul li a i {
   display: flex;
   align-items: center;
   gap: 10%;
-  margin-bottom: 20px;
 }
 
 /* العنوان ياخد تلتين */
@@ -127,6 +126,8 @@ ul li a i {
   justify-content: space-between;
   border-radius: 12px;
   box-shadow: 0 4px 6px rgba(0, 86, 137, 0.2);
+  margin-bottom: 20px;
+  margin-top: 20px;
 }
 .title-info p,
 .title-info i {
