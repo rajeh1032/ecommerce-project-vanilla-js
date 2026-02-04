@@ -1,6 +1,6 @@
 // js/orders.js
-import { auth, onAuthStateChanged } from '../js/config/firebase.js';
-import { getUserOrders } from './services/order.service.js';
+import { fetchOrdersByUserId } from './services/order.service.js';
+import { getUserUID, isUserLoggedIn } from './utils/userStorage.js';
 
 // ============================================================
 // كل أورد في Firebase شكله كده:
@@ -23,21 +23,19 @@ let currentFilter   = 'all';
 
 // ─── Init ──────────────────────────────────────
 async function initPage() {
-    onAuthStateChanged(auth, async (user) => {
-        if (!user) {
-            showError('Please login to view your orders');
-            setTimeout(() => { window.location.href = 'login.html'; }, 2000);
-            return;
-        }
-        await loadOrders(user.uid);
-        setupEventListeners();
-    });
+    if (!isUserLoggedIn()) {
+        showError('Please login to view your orders');
+        setTimeout(() => { window.location.href = 'login.html'; }, 2000);
+        return;
+    }
+    await loadOrders(getUserUID());
+    setupEventListeners();
 }
 
 // ─── جلب الأوردرات بـ userId ──────────────────
 async function loadOrders(userId) {
     try {
-        const orders = await getUserOrders(userId);
+        const orders = await fetchOrdersByUserId(userId);
         allOrders = orders;
         displayOrders(orders);
     } catch (error) {
