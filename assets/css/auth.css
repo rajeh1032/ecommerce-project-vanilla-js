@@ -141,12 +141,12 @@ header {
   border: none;
   border-radius: 30px;
   outline: none;
-  background: linear-gradient(135deg, #0d8ba5 0%, #0d5e71 100%);
+  background: linear-gradient(135deg, #005873 0%, #005873 100%);
   cursor: pointer;
   transition: 0.3s ease-in-out;
 }
 .submit:hover {
-  background: linear-gradient(135deg, #0a7a8f 0%, #0a4f5f 100%);
+  background: linear-gradient(135deg, #005873 0%, #005873 100%);
   box-shadow: 1px 5px 7px 1px rgba(0, 0, 0, 0.2);
 }
 .two-col {
