@@ -35,10 +35,19 @@ export var FavoritesUI = {
         };
 
         var img = document.createElement('img');
-        var rawImageData = product.imageUrl ;
-        img.src = 'data:image/png;base64,' + rawImageData;
-        img.alt = product.name;
+        var rawImageData = product.imageUrl || product.image;
+        var imgSrc = "";
 
+        if (rawImageData) {
+            if (rawImageData.startsWith('http') || rawImageData.startsWith('data:image')) {
+                imgSrc = rawImageData;
+            } else {
+                imgSrc = 'data:image/png;base64,' + rawImageData;
+            }
+        }
+
+        img.src = imgSrc;
+        img.alt = product.name;
         imgContainer.appendChild(favBtn);
         imgContainer.appendChild(img);
         card.appendChild(imgContainer);
