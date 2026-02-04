@@ -53,7 +53,6 @@ document.addEventListener('DOMContentLoaded', function() {
         orderBtn.addEventListener('click', () => {
             const cart = JSON.parse(localStorage.getItem('cart')) || [];
             if (cart.length > 0) {
-                localStorage.removeItem('cart');
                 CartUI.renderCart();
             }
         });
