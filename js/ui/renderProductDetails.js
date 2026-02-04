@@ -32,23 +32,26 @@ export var ProductDetailsUI = {
     this.setupAddToCartButton(product);
 },
 
-  renderProductImage: function(product) {
+renderProductImage: function(product) {
     var imageContainer = document.querySelector('.main-image');
     if (!imageContainer) return;
 
     imageContainer.innerHTML = '';
-
     var img = document.createElement('img');
-    
     var rawImageData = product.imageUrl;
-    
-    if (rawImageData)
-        img.src = 'data:image/png;base64,' + rawImageData;
+    var imgSrc = "";
 
-    
-    img.alt = product.name || 'Product Image';
+    if (rawImageData) {
+        var cleanData = rawImageData.trim();
+        if (cleanData.startsWith('http') || cleanData.startsWith('data:image')) {
+            imgSrc = cleanData;
+        } else {
+            imgSrc = 'data:image/png;base64,' + cleanData;
+        }
+    }
+    img.src = imgSrc;
     imageContainer.appendChild(img);
-  },
+},
 
   setupQuantityControls: function(product) {
     var qtyInput = document.getElementById('qty-input');
