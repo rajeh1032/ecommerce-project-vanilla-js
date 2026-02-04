@@ -7,12 +7,10 @@ import {
   query,
   where,
   getDocs,
-} from "../config/firebase.js";
-
-import {
+  onAuthStateChanged,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
-} from "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth.js";
+} from "../config/firebase.js";
 
 // Elements
 const loginEmail = document.getElementById("loginEmailField");
@@ -54,69 +52,6 @@ function removeError(input) {
   }
   input.style.border = "none";
 }
-
-// LOGIN
-loginSubmitBtn.addEventListener("click", (e) => {
-  e.preventDefault();
-  const email = loginEmail.value;
-  const password = loginPassword.value;
-  removeError(loginEmail);
-  removeError(loginPassword);
-  if (!email) {
-    showError(loginEmail, "Email is required");
-    return;
-  }
-  if (!validateEmail(email)) {
-    showError(loginEmail, "Invalid email format");
-    return;
-  }
-  if (!password) {
-    showError(loginPassword, "Password is required");
-    return;
-  }
-  if (!validatePassword(password)) {
-    showError(loginPassword, "Password must be at least 6 characters");
-    return;
-  }
-
-  signInWithEmailAndPassword(auth, email, password)
-    .then(async (userCredential) => {
-      const email = userCredential.user.email;
-      const uid = userCredential.user.uid;
-
-      // Get user data from Firestore
-      const userRef = collection(db, "users");
-      const q = query(userRef, where("email", "==", email));
-      const snapshot = await getDocs(q);
-
-      let role = "user";
-      let userName = "";
-      let userDocId = "";
-
-      if (!snapshot.empty) {
-        const userData = snapshot.docs[0].data();
-        role = userData.role;
-        userName = userData.name;
-        userDocId = snapshot.docs[0].id;
-      }
-
-      // Store user info in localStorage
-      localStorage.setItem("userUID", uid);
-      localStorage.setItem("userEmail", email);
-      localStorage.setItem("userRole", role);
-      localStorage.setItem("userName", userName);
-      localStorage.setItem("userDocId", userDocId);
-
-      if (role === "admin") {
-        window.location.href = "../admin/dashboard.html";
-      } else {
-        window.location.href = "../public/index.html";
-      }
-    })
-    .catch((error) => {
-      showError(loginEmail, error.message);
-    });
-});
 
 // REGISTER
 registerSubmitBtn.addEventListener("click", (e) => {
@@ -178,6 +113,85 @@ registerSubmitBtn.addEventListener("click", (e) => {
     .catch((error) => {
       showError(registerEmail, error.message);
     });
+});
+
+// LOGIN
+loginSubmitBtn.addEventListener("click", (e) => {
+  e.preventDefault();
+  const email = loginEmail.value;
+  const password = loginPassword.value;
+  removeError(loginEmail);
+  removeError(loginPassword);
+  if (!email) {
+    showError(loginEmail, "Email is required");
+    return;
+  }
+  if (!validateEmail(email)) {
+    showError(loginEmail, "Invalid email format");
+    return;
+  }
+  if (!password) {
+    showError(loginPassword, "Password is required");
+    return;
+  }
+  if (!validatePassword(password)) {
+    showError(loginPassword, "Password must be at least 6 characters");
+    return;
+  }
+
+  signInWithEmailAndPassword(auth, email, password)
+    .then(async (userCredential) => {
+      const email = userCredential.user.email;
+      const uid = userCredential.user.uid;
+
+      // Get user data from Firestore
+      const userRef = collection(db, "users");
+      const q = query(userRef, where("email", "==", email));
+      const snapshot = await getDocs(q);
+
+      let role = "user";
+      let userName = "";
+      let userDocId = "";
+
+      if (!snapshot.empty) {
+        const userData = snapshot.docs[0].data();
+        role = userData.role;
+        userName = userData.name;
+        userDocId = snapshot.docs[0].id;
+      }
+
+      // Store user info in localStorage
+      localStorage.setItem("userUID", uid);
+      localStorage.setItem("userEmail", email);
+      localStorage.setItem("userRole", role);
+      localStorage.setItem("userName", userName);
+      localStorage.setItem("userDocId", userDocId);
+    })
+    .catch((error) => {
+      showError(loginEmail, error.message);
+    });
+});
+
+// Auth Change State
+onAuthStateChanged(auth, async (user) => {
+  if (!user) return;
+
+  try {
+    const email = user.email;
+    const q = query(collection(db, "users"), where("email", "==", email));
+    const snapshot = await getDocs(q);
+    let role = "user";
+    if (!snapshot.empty) {
+      role = snapshot.docs[0].data().role;
+    }
+    if (role === "admin") {
+      window.location.href = "../admin/dashboard.html";
+    } else {
+      window.location.href = "../public/index.html";
+    }
+  } catch (error) {
+    console.error("Error fetching user data:", error);
+  }
 });
 
 // Login - Signup animation
