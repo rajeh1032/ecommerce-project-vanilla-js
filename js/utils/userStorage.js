@@ -17,6 +17,17 @@ export function getUserName() {
 export function getUserDocId() {
   return localStorage.getItem("userDocId");
 }
+export function isAdmin() {
+  return getUserRole() === "admin";
+}
+
+export function getUserPhone() {
+  return localStorage.getItem("userPhone");
+}
+
+export function getUserAddress() {
+  return localStorage.getItem("userAddress");
+}
 
 export function getCurrentUser() {
   return {
@@ -25,6 +36,9 @@ export function getCurrentUser() {
     role: getUserRole(),
     name: getUserName(),
     docId: getUserDocId(),
+    phone: getUserPhone(),
+    address: getUserAddress(),
+    cart: getUserCart(),
   };
 }
 
@@ -38,8 +52,4 @@ export function clearUserData() {
   localStorage.removeItem("userRole");
   localStorage.removeItem("userName");
   localStorage.removeItem("userDocId");
-}
-
-export function isAdmin() {
-  return getUserRole() === "admin";
 }

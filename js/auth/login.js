@@ -107,6 +107,8 @@ registerSubmitBtn.addEventListener("click", (e) => {
       localStorage.setItem("userRole", "user");
       localStorage.setItem("userName", fullName);
       localStorage.setItem("userDocId", docRef.id);
+      localStorage.setItem("userPhone", registerPhone.value);
+      localStorage.setItem("userAddress", registerAddress.value);
 
       window.location.href = "../public/index.html";
     })
