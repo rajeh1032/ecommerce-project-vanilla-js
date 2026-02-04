@@ -16,6 +16,10 @@ export async function loadDashBoardState() {
     ]);
     //boxes of info in first page
     const dataBoxes = document.querySelectorAll(".data-info .box .data span");
+    const userNameInAdminPage = document.getElementById("dashboardUserName");
+    if (userNameInAdminPage) {
+      userNameInAdminPage.textContent = users[0].name;
+    }
     if (dataBoxes.length >= 4) {
       dataBoxes[0].textContent = users.length;
       dataBoxes[1].textContent = categories.length;
@@ -91,7 +95,7 @@ export async function loadCategoriesData() {
         (category) => `
    <tr data-category-id=${category.id}>
    <td>${category.name || ""}</td>
-   <td><span class="price">${category.description || ""}</span></td>
+   <td><span class="">${category.description || ""}</span></td>
    <td><img src="${formatImageSrc(category.imageUrl || "")}" alt="Category-image" class="categoryImg"></td>
    <td>
    <i class="fa-solid fa-pen price edit-category"  data-category-id="${category.id}"
