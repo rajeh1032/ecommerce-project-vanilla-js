@@ -39,10 +39,6 @@ const auth = getAuth(app);
 export {
   auth,
   db,
-  onAuthStateChanged,
-  signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
-  signOut,
   collection,
   getDocs,
   getDoc,

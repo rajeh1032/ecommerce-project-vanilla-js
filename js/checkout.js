@@ -1,8 +1,6 @@
 // js/checkout.js
 import { 
-  auth, 
   db, 
-  onAuthStateChanged, 
   collection, 
   getDocs, 
   addDoc, 
@@ -10,30 +8,26 @@ import {
   where, 
   deleteDoc, 
   doc 
-} from '../js/config/firebase.js';
-
+} from './config/firebase.js';
+import { getUserUID, getUserEmail, isUserLoggedIn } from './utils/userStorage.js';
 // Global variables
 let currentCart = [];
-let currentUser = null;
 let currentShippingType = 'standard';
 
 // Initialize page
 async function initPage() {
     try {
         // Check if user is logged in
-        onAuthStateChanged(auth, async (user) => {
-            if (user) {
-                currentUser = user;
-                await loadCart(user.uid);
-                setupEventListeners();
-            } else {
-                // Redirect to login if not authenticated
-                showError('Please login to continue');
-                setTimeout(() => {
-                    window.location.href = 'login.html';
-                }, 2000);
-            }
-        });
+        if (isUserLoggedIn()) {
+            await loadCart(getUserUID());
+            setupEventListeners();
+        } else {
+            // Redirect to login if not authenticated
+            showError('Please login to continue');
+            setTimeout(() => {
+                window.location.href = 'login.html';
+            }, 2000);
+        }
     } catch (error) {
         console.error('Error initializing page:', error);
         showError('Failed to load. Please refresh the page.');
@@ -166,7 +160,7 @@ function setupEventListeners() {
 
 // Handle submit order
 async function handleSubmit() {
-    if (!currentUser) {
+    if (!isUserLoggedIn()) {
         alert('Please login to submit order');
         return;
     }
@@ -193,8 +187,8 @@ async function handleSubmit() {
 
         // Create order object
         const orderData = {
-            userId: currentUser.uid,
-            userEmail: currentUser.email || '',
+            userId: getUserUID(),
+            userEmail: getUserEmail() || '',
             items: currentCart.map(item => ({
                 productId: item.productId || '',
                 productName: item.productName || item.details || '',
@@ -216,14 +210,14 @@ async function handleSubmit() {
         await addDoc(ordersCollection, orderData);
 
         // Clear cart after successful order
-        await clearCart(currentUser.uid);
+        await clearCart(getUserUID());
 
         // Show success message
         showSuccess();
 
         // Redirect to orders page after 2 seconds
         setTimeout(() => {
-            window.location.href = 'profile.html';
+            window.location.href = 'order.html';
         }, 2000);
 
     } catch (error) {
@@ -286,3 +280,13 @@ function escapeHtml(text) {
 
 // Initialize when DOM is loaded
 document.addEventListener('DOMContentLoaded', initPage);
+
+// Add this JavaScript code to your page
+document.getElementById('submitBtn').addEventListener('click', function(e) {
+    e.preventDefault(); // لو الزرار جوا form
+    
+    // هنا ممكن تحطي الكود بتاع حفظ البيانات في Firebase أو أي حاجة
+    // بعد كده نروح على صفحة completed
+    
+    window.location.href = 'completed.html';
+});
