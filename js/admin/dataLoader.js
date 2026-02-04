@@ -29,14 +29,24 @@ export async function loadDashBoardState() {
     //table of products in first page
     const tbody = document.querySelector("table tbody");
     if (tbody) {
-      tbody.innerHTML = products
+      tbody.innerHTML = orders
         .slice(0, 4)
         .map(
-          (products) => `
+          (order) => `
    <tr>
-   <td>${products.name}</td>
-   <td><span class="price">${products.price}</span></td>
-   <td><span class="count">${products.quantity}</span></td>
+   <td>${order.userName}</td>
+   <td>${order.userPhone}</td>
+   <td>${order.userAddress}</td>
+   <td>${order.orderDate}</td>
+   <td>${order.items}</td>
+   <td>${order.total}$</td>
+   <td>${order.status}</td>
+   <td>
+   <i class="fa-solid fa-pen price edit-order" 
+      data-order-id="${order.id}"
+      data-status="${order.status}">
+   </i>
+   </td>
    </tr>
     `,
         )
@@ -60,7 +70,7 @@ export async function loadUsersData() {
         <td>${user.name || ""}</td>
         <td><span>${user.email || ""}</span></td>
         <td><span>${user.phone || ""}</span></td>
-        <td><span>${user.address || ""}</span></td>
+        <td><span>${user.address || "Cairo"}</span></td>
         <td><span class="count">${user.role || "user"}</span></td>
         <td>
           <i class="fa-solid fa-pen price edit-user" 
@@ -174,24 +184,59 @@ export async function loadOrdersData() {
     if (!tbody) return;
 
     tbody.innerHTML = orders
-      .map(
-        (order) => `
+      .map((order) => {
+        const itemsHtml = order.items
+          .map((item) => `${item.productName} (x${item.quantity})`)
+          .join("<br>");
+
+        const totalQty = order.items.reduce(
+          (sum, item) => sum + item.quantity,
+          0,
+        );
+
+        const orderDate = new Date(
+          order.createdAt || order.orderDate,
+        ).toLocaleDateString("en-GB");
+
+        return `
       <tr data-order-id="${order.id}">
-        <td>${order.customerName || ""}</td>
-        <td>${order.details || ""}</td>
-        <td>${order.phoneNumber || ""}</td>
-        <td><span class="count">${order.quantity || 0}</span></td>
-        <td><span class="price">$${order.price || 0}</span></td>
-        <td><span class="count">${order.status || "pending"}</span></td>
+        <td>${order.userName || "-"}</td>
+        <td>${order.userPhone || "-"}</td>
+        <td>${order.userEmail || "-"}</td>
+        <td>${order.userAddress || "-"}</td>
+        <td>${orderDate}</td>
+
+        <td>${itemsHtml}</td>
+
         <td>
+          <span class="count">${totalQty}</span>
+        </td>
+
+        <td>
+          $${order.shippingCost.toFixed(2)}
+        </td>
+
+        <td>
+          <span class="price">
+            $${order.total.toFixed(2)}
+          </span>
+        </td>
+
+        <td>
+          <span class="status ${order.status.toLowerCase()}">
+            ${order.status}
+          </span>
+        </td>
+
+           <td>
           <i class="fa-solid fa-pen price edit-order" 
              data-order-id="${order.id}"
-             data-status="${order.status || "pending"}">
+             data-status="${order.status}">
           </i>
         </td>
       </tr>
-    `,
-      )
+    `;
+      })
       .join("");
   } catch (error) {
     console.error("Error loading orders data:", error);

@@ -212,23 +212,4 @@ export async function updateOrderStatus(orderId, status) {
   }
 }
 
-export async function getAllOrders() {
-  try {
-    const ordersCollection = collection(db, "orders");
-    const q = query(ordersCollection, orderBy("createdAt", "desc"));
-    const ordersSnapshot = await getDocs(q);
 
-    const orders = [];
-    ordersSnapshot.forEach((doc) => {
-      orders.push({
-        id: doc.id,
-        ...doc.data(),
-      });
-    });
-
-    return orders;
-  } catch (error) {
-    console.error("Error fetching all orders:", error);
-    throw error;
-  }
-}

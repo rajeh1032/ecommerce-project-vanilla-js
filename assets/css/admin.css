@@ -110,34 +110,39 @@ ul li a i {
   margin: 10px;
 }
 
+.page-header {
+  display: flex;
+  align-items: center;
+  gap: 10%;
+  margin-bottom: 20px;
+}
+
+/* العنوان ياخد تلتين */
 .title-info {
+  flex: 1.4;
   background: linear-gradient(135deg, #005873 0%, #005873 100%);
   padding: 20px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   border-radius: 12px;
-  margin: 10px 0;
   box-shadow: 0 4px 6px rgba(0, 86, 137, 0.2);
-  color: white;
 }
-.title-info i,
-.title-info p {
-  font-size: 24px;
+.title-info p,
+.title-info i {
   color: white;
+  font-size: 16px;
+  font-weight: 600;
 }
 
-/* Search and Add Category Section */
 .category-controls {
+  /* flex: 1; */
   display: flex;
-  /* flex-flow: row; */
-  align-items: center;
-  gap: 15px;
-  margin: 20px 0;
-  flex-wrap: wrap;
+  justify-content: flex-end;
 }
 
 .category-controls input[type="text"] {
+  display: none;
   flex: 3;
   min-width: 250px;
   height: 45px;
@@ -160,13 +165,13 @@ ul li a i {
 }
 
 .category-controls button {
-  height: 45px;
-  padding: 0 25px;
+  /* height: 45px; */
+  padding: 20px;
   background: linear-gradient(135deg, #005873 0%, #005873 100%);
   color: white;
   border: none;
   border-radius: 8px;
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;

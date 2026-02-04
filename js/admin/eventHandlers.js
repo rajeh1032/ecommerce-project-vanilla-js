@@ -123,7 +123,7 @@ function handleEditCategory(target) {
 
   modalTitles.category.textContent = "Edit Category";
   document.getElementById("categoryName").value = target.dataset.name;
-  document.getElementById("categoryDesc").value = target.dataset.desc;
+  document.getElementById("categoryDesc").value = target.dataset.description;
 }
 
 function handleAddCategory() {
