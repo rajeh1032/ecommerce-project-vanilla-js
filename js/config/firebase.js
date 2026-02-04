@@ -49,4 +49,8 @@ export {
   query,
   orderBy,
   where,
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  signOut,
 };
