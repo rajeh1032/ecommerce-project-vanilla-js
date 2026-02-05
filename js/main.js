@@ -89,19 +89,19 @@ const sliderData = [
             title: "Get the new <br> <span class='highlight'>beauty buzz.</span>",
             desc: "The latest, greatest & freshest from your fave brands.",
             img: "../assets/images/makeup.png",
-            link: "product.html"
+            link: "public/product.html"
         },
         {
             title: "The new year <br> looks good.",
             desc: "Add vitamins & collagen to your supplement routine to keep it going strong.",
             img: "../assets/images/skincare.png",
-            link: "product.html"
+            link: "public/product.html"
         },
         {
             title: "Handy kitchen <br> appliances",
             desc: "Discover top tools & gadgets to make easy ( & tasty ) meals.",
             img: "../assets/images/3.png",
-            link: "product.html"
+            link: "public/product.html"
         }
     ];
 

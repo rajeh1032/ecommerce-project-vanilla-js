@@ -78,7 +78,7 @@ export var FavoritesUI = {
         card.appendChild(infoContainer);
 
         card.onclick = () => {
-            window.location.href = `product_details.html?id=${product.id}`;
+            window.location.href = `public/product_details.html?id=${product.id}`;
         };
         return card;
     },

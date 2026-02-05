@@ -1,565 +1,569 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Personal Information</title>
+    <link rel="icon" href="../assets/images/applogo.png" type="image/x-icon" />
+
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            background-color: #f5f5f5;
-            display: flex;
-            min-height: 100vh;
-        }
+      body {
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          "Helvetica Neue", Arial, sans-serif;
+        background-color: #f5f5f5;
+        display: flex;
+        min-height: 100vh;
+      }
 
+      .sidebar {
+        width: 400px;
+        background-color: white;
+        box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+      }
+
+      .profile-section {
+        background: linear-gradient(135deg, #4a919e 0%, #5ba3b0 100%);
+        padding: 40px 20px;
+        text-align: center;
+        color: white;
+      }
+
+      .profile-name {
+        font-size: 24px;
+        font-weight: 500;
+        margin-bottom: 15px;
+      }
+
+      .balance-badge {
+        display: inline-block;
+        border: 2px solid rgba(255, 255, 255, 0.5);
+        border-radius: 25px;
+        padding: 8px 20px;
+        font-size: 14px;
+      }
+
+      .balance-amount {
+        font-size: 20px;
+        font-weight: 600;
+        margin-left: 5px;
+      }
+
+      .menu {
+        list-style: none;
+      }
+
+      .menu-item {
+        padding: 18px 25px;
+        border-bottom: 1px solid #e0e0e0;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        transition: background-color 0.2s;
+      }
+
+      .menu-item:hover {
+        background-color: #f8f8f8;
+      }
+
+      .menu-item.active {
+        background-color: #4a919e;
+        color: white;
+      }
+
+      .menu-item-icon {
+        width: 20px;
+        margin-right: 15px;
+        font-size: 18px;
+      }
+
+      .menu-item-text {
+        font-size: 15px;
+      }
+      .menu-link {
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+        color: inherit;
+        width: 100%;
+      }
+
+      .main-content {
+        flex: 1;
+        padding: 60px 80px;
+      }
+
+      .form-title {
+        font-size: 28px;
+        color: #4a919e;
+        margin-bottom: 40px;
+        font-weight: 400;
+      }
+
+      .form-group {
+        margin-bottom: 25px;
+      }
+
+      .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        margin-bottom: 25px;
+      }
+
+      .form-label {
+        display: block;
+        margin-bottom: 8px;
+        color: #666;
+        font-size: 14px;
+      }
+
+      .form-input {
+        width: 100%;
+        padding: 12px 15px;
+        border: 1px solid #d0d0d0;
+        border-radius: 4px;
+        font-size: 15px;
+        transition: border-color 0.2s;
+      }
+
+      .form-input:focus {
+        outline: none;
+        border-color: #4a919e;
+      }
+
+      .phone-input-group {
+        display: flex;
+        gap: 10px;
+      }
+
+      .country-select {
+        width: 120px;
+        padding: 12px 10px;
+        border: 1px solid #d0d0d0;
+        border-radius: 4px;
+        font-size: 15px;
+        cursor: pointer;
+        background-color: white;
+        appearance: none;
+        background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: right 10px center;
+        background-size: 16px;
+        padding-right: 35px;
+      }
+
+      .phone-input {
+        flex: 1;
+      }
+
+      .date-select {
+        width: 100%;
+        padding: 12px 15px;
+        border: 1px solid #d0d0d0;
+        border-radius: 4px;
+        font-size: 15px;
+        cursor: pointer;
+        background-color: white;
+        appearance: none;
+        background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: right 15px center;
+        background-size: 16px;
+        padding-right: 40px;
+      }
+
+      .gender-selection {
+        display: flex;
+        gap: 15px;
+        margin-top: 10px;
+      }
+
+      .gender-option {
+        flex: 1;
+        max-width: 150px;
+        padding: 20px;
+        border: 2px solid #d0d0d0;
+        border-radius: 8px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s;
+        background-color: white;
+      }
+
+      .gender-option:hover:not(.selected) {
+        border-color: #4a919e;
+        background-color: #f0f7f8;
+      }
+
+      .gender-option.selected {
+        background-color: #4a919e;
+        border-color: #4a919e;
+        color: white;
+      }
+
+      .gender-option.selected:hover {
+        background-color: #3d7e89;
+        border-color: #3d7e89;
+      }
+
+      .gender-icon {
+        font-size: 32px;
+        margin-bottom: 8px;
+      }
+
+      .gender-label {
+        font-size: 15px;
+      }
+
+      .form-note {
+        color: #888;
+        font-size: 14px;
+        line-height: 1.5;
+        margin: 30px 0;
+      }
+
+      .form-actions {
+        display: flex;
+        gap: 15px;
+        margin-top: 40px;
+      }
+
+      .btn {
+        padding: 12px 35px;
+        border-radius: 4px;
+        font-size: 15px;
+        cursor: pointer;
+        transition: all 0.2s;
+        border: none;
+        font-weight: 500;
+      }
+
+      .btn-cancel {
+        background-color: white;
+        color: #4a919e;
+        border: 1px solid #d0d0d0;
+      }
+
+      .btn-cancel:hover {
+        background-color: #f5f5f5;
+      }
+
+      .btn-save {
+        background-color: #4a919e;
+        color: white;
+        padding: 12px 45px;
+      }
+
+      .btn-save:hover {
+        background-color: #3d7e89;
+      }
+
+      @media (max-width: 1024px) {
         .sidebar {
-            width: 400px;
-            background-color: white;
-            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
-        }
-
-        .profile-section {
-            background: linear-gradient(135deg, #4a919e 0%, #5ba3b0 100%);
-            padding: 40px 20px;
-            text-align: center;
-            color: white;
-        }
-
-        .profile-name {
-            font-size: 24px;
-            font-weight: 500;
-            margin-bottom: 15px;
-        }
-
-        .balance-badge {
-            display: inline-block;
-            border: 2px solid rgba(255,255,255,0.5);
-            border-radius: 25px;
-            padding: 8px 20px;
-            font-size: 14px;
-        }
-
-        .balance-amount {
-            font-size: 20px;
-            font-weight: 600;
-            margin-left: 5px;
-        }
-
-        .menu {
-            list-style: none;
-        }
-
-        .menu-item {
-            padding: 18px 25px;
-            border-bottom: 1px solid #e0e0e0;
-            display: flex;
-            align-items: center;
-            cursor: pointer;
-            transition: background-color 0.2s;
-        }
-
-        .menu-item:hover {
-            background-color: #f8f8f8;
-        }
-
-        .menu-item.active {
-            background-color: #4a919e;
-            color: white;
-        }
-
-        .menu-item-icon {
-            width: 20px;
-            margin-right: 15px;
-            font-size: 18px;
-        }
-
-        .menu-item-text {
-            font-size: 15px;
-        }
-        .menu-link {
-           display: flex;
-           align-items: center;
-           text-decoration: none;
-           color: inherit;
-           width: 100%;
+          width: 300px;
         }
 
         .main-content {
-            flex: 1;
-            padding: 60px 80px;
+          padding: 40px 40px;
+        }
+      }
+
+      @media (max-width: 768px) {
+        body {
+          flex-direction: column;
         }
 
-        .form-title {
-            font-size: 28px;
-            color: #4a919e;
-            margin-bottom: 40px;
-            font-weight: 400;
-        }
-
-        .form-group {
-            margin-bottom: 25px;
+        .sidebar {
+          width: 100%;
         }
 
         .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin-bottom: 25px;
+          grid-template-columns: 1fr;
         }
 
-        .form-label {
-            display: block;
-            margin-bottom: 8px;
-            color: #666;
-            font-size: 14px;
+        .main-content {
+          padding: 30px 20px;
         }
-
-        .form-input {
-            width: 100%;
-            padding: 12px 15px;
-            border: 1px solid #d0d0d0;
-            border-radius: 4px;
-            font-size: 15px;
-            transition: border-color 0.2s;
-        }
-
-        .form-input:focus {
-            outline: none;
-            border-color: #4a919e;
-        }
-
-        .phone-input-group {
-            display: flex;
-            gap: 10px;
-        }
-
-        .country-select {
-            width: 120px;
-            padding: 12px 10px;
-            border: 1px solid #d0d0d0;
-            border-radius: 4px;
-            font-size: 15px;
-            cursor: pointer;
-            background-color: white;
-            appearance: none;
-            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-            background-repeat: no-repeat;
-            background-position: right 10px center;
-            background-size: 16px;
-            padding-right: 35px;
-        }
-
-        .phone-input {
-            flex: 1;
-        }
-
-        .date-select {
-            width: 100%;
-            padding: 12px 15px;
-            border: 1px solid #d0d0d0;
-            border-radius: 4px;
-            font-size: 15px;
-            cursor: pointer;
-            background-color: white;
-            appearance: none;
-            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-            background-repeat: no-repeat;
-            background-position: right 15px center;
-            background-size: 16px;
-            padding-right: 40px;
-        }
-
-        .gender-selection {
-            display: flex;
-            gap: 15px;
-            margin-top: 10px;
-        }
-
-        .gender-option {
-            flex: 1;
-            max-width: 150px;
-            padding: 20px;
-            border: 2px solid #d0d0d0;
-            border-radius: 8px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s;
-            background-color: white;
-        }
-
-        .gender-option:hover:not(.selected) {
-            border-color: #4a919e;
-            background-color: #f0f7f8;
-        }
-
-        .gender-option.selected {
-            background-color: #4a919e;
-            border-color: #4a919e;
-            color: white;
-        }
-
-        .gender-option.selected:hover {
-            background-color: #3d7e89;
-            border-color: #3d7e89;
-        }
-
-        .gender-icon {
-            font-size: 32px;
-            margin-bottom: 8px;
-        }
-
-        .gender-label {
-            font-size: 15px;
-        }
-
-        .form-note {
-            color: #888;
-            font-size: 14px;
-            line-height: 1.5;
-            margin: 30px 0;
-        }
-
-        .form-actions {
-            display: flex;
-            gap: 15px;
-            margin-top: 40px;
-        }
-
-        .btn {
-            padding: 12px 35px;
-            border-radius: 4px;
-            font-size: 15px;
-            cursor: pointer;
-            transition: all 0.2s;
-            border: none;
-            font-weight: 500;
-        }
-
-        .btn-cancel {
-            background-color: white;
-            color: #4a919e;
-            border: 1px solid #d0d0d0;
-        }
-
-        .btn-cancel:hover {
-            background-color: #f5f5f5;
-        }
-
-        .btn-save {
-            background-color: #4a919e;
-            color: white;
-            padding: 12px 45px;
-        }
-
-        .btn-save:hover {
-            background-color: #3d7e89;
-        }
-
-        @media (max-width: 1024px) {
-            .sidebar {
-                width: 300px;
-            }
-
-            .main-content {
-                padding: 40px 40px;
-            }
-        }
-
-        @media (max-width: 768px) {
-            body {
-                flex-direction: column;
-            }
-
-            .sidebar {
-                width: 100%;
-            }
-
-            .form-row {
-                grid-template-columns: 1fr;
-            }
-
-            .main-content {
-                padding: 30px 20px;
-            }
-        }
-            .hidden-item {
-                display: none;
-        }
-
+      }
+      .hidden-item {
+        display: none;
+      }
     </style>
-</head>
-<body>
-  <aside class="sidebar">
+  </head>
+  <body>
+    <aside class="sidebar">
+      <div class="profile-section">
+        <div class="profile-name" id="sidebarUserName">User Name</div>
 
-  <div class="profile-section">
+        <div class="balance-badge hidden-item">
+          Balance <span class="balance-amount">$0</span>
+        </div>
+      </div>
 
-    <div class="profile-name" id="sidebarUserName">
-      User Name
-    </div>
+      <ul class="menu">
+        <li class="menu-item hidden-item">
+          <span class="menu-item-icon">💼</span>
+          <span class="menu-item-text">My wallet</span>
+        </li>
 
-    <div class="balance-badge hidden-item">
-      Balance <span class="balance-amount">$0</span>
-    </div>
+        <li class="menu-item hidden-item">
+          <span class="menu-item-icon">🏆</span>
+          <span class="menu-item-text">My rewards</span>
+        </li>
 
-  </div>
+        <li class="menu-item active">
+          <span class="menu-item-icon">👤</span>
+          <span class="menu-item-text">Personal Information</span>
+        </li>
 
-  <ul class="menu">
+        <li class="menu-item">
+          <a href="orders.html" class="menu-link">
+            <span class="menu-item-icon">📦</span>
+            <span class="menu-item-text">Orders</span>
+          </a>
+        </li>
 
-    <li class="menu-item hidden-item">
-      <span class="menu-item-icon">💼</span>
-      <span class="menu-item-text">My wallet</span>
-    </li>
+        <li class="menu-item">
+          <a href="favorite.html" class="menu-link">
+            <span class="menu-item-icon">❤️</span>
+            <span class="menu-item-text">Favourite Items</span>
+          </a>
+        </li>
 
-    <li class="menu-item hidden-item">
-      <span class="menu-item-icon">🏆</span>
-      <span class="menu-item-text">My rewards</span>
-    </li>
+        <li class="menu-item hidden-item">
+          <span class="menu-item-icon">📍</span>
+          <span class="menu-item-text">Location</span>
+        </li>
 
-    <li class="menu-item active">
-      <span class="menu-item-icon">👤</span>
-      <span class="menu-item-text">Personal Information</span>
-    </li>
+        <li class="menu-item hidden-item">
+          <span class="menu-item-icon">💳</span>
+          <span class="menu-item-text">Payment Method</span>
+        </li>
 
-    <li class="menu-item">
-      <a href="orders.html" class="menu-link">
-        <span class="menu-item-icon">📦</span>
-        <span class="menu-item-text">Orders</span>
-      </a>
-    </li>
+        <li class="menu-item hidden-item">
+          <span class="menu-item-icon">⚙️</span>
+          <span class="menu-item-text">Contact Preferences</span>
+        </li>
 
-    <li class="menu-item">
-      <a href="favorite.html" class="menu-link">
-        <span class="menu-item-icon">❤️</span>
-        <span class="menu-item-text">Favourite Items</span>
-      </a>
-    </li>
+        <li class="menu-item hidden-item">
+          <span class="menu-item-icon">❓</span>
+          <span class="menu-item-text">Need Help</span>
+        </li>
 
-    <li class="menu-item hidden-item">
-      <span class="menu-item-icon">📍</span>
-      <span class="menu-item-text">Location</span>
-    </li>
-
-    <li class="menu-item hidden-item">
-      <span class="menu-item-icon">💳</span>
-      <span class="menu-item-text">Payment Method</span>
-    </li>
-
-    <li class="menu-item hidden-item">
-      <span class="menu-item-icon">⚙️</span>
-      <span class="menu-item-text">Contact Preferences</span>
-    </li>
-
-    <li class="menu-item hidden-item">
-      <span class="menu-item-icon">❓</span>
-      <span class="menu-item-text">Need Help</span>
-    </li>
-
-    <li class="menu-item" id="logoutBtn">
-      <span class="menu-item-icon">🚪</span>
-      <span class="menu-item-text">Sign Out</span>
-    </li>
-
-
-   </ul>
-
-</aside>
-
+        <li class="menu-item" id="logoutBtn">
+          <span class="menu-item-icon">🚪</span>
+          <span class="menu-item-text">Sign Out</span>
+        </li>
+      </ul>
+    </aside>
 
     <main class="main-content">
-        <h1 class="form-title">Personal Information</h1>
-        <form id="personalInfoForm">
-           <div class="form-group">
-              <label class="form-label">Full Name</label>
-              <input type="text" id="fullName" class="form-input">
-           </div>
+      <h1 class="form-title">Personal Information</h1>
+      <form id="personalInfoForm">
+        <div class="form-group">
+          <label class="form-label">Full Name</label>
+          <input type="text" id="fullName" class="form-input" />
+        </div>
 
+        <div class="form-group">
+          <label class="form-label" for="email">Email Address</label>
+          <input type="email" id="email" class="form-input" readonly />
+        </div>
 
-            <div class="form-group">
-                <label class="form-label" for="email">Email Address</label>
-                <input type="email" id="email" class="form-input" readonly>
+        <div class="form-group">
+          <label class="form-label">Phone number</label>
+          <input
+            type="tel"
+            class="form-input phone-input"
+            id="phone"
+            placeholder=""
+          />
+        </div>
+
+        <div class="form-row hidden-item">
+          <div class="form-group"></div>
+          <div class="form-group">
+            <label class="form-label" for="birthdate">Birthdate</label>
+            <select class="date-select" id="birthdate"></select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Address</label>
+          <input type="text" id="address" class="form-input" />
+        </div>
+
+        <div class="form-group hidden-item">
+          <label class="form-label"
+            >Gender <span style="color: #e74c3c">*</span></label
+          >
+          <div class="gender-selection">
+            <div class="gender-option" data-gender="male">
+              <div class="gender-icon">♂</div>
+              <div class="gender-label">Male</div>
             </div>
-
-            <div class="form-group">
-                <label class="form-label">Phone number</label>
-                <input type="tel" class="form-input phone-input" id="phone" placeholder="">
+            <div class="gender-option" data-gender="female">
+              <div class="gender-icon">♀</div>
+              <div class="gender-label">Female</div>
             </div>
+          </div>
+        </div>
 
-            <div class="form-row hidden-item">
-                <div class="form-group"></div>
-                <div class="form-group">
-                    <label class="form-label" for="birthdate">Birthdate</label>
-                    <select class="date-select" id="birthdate">
-                    </select>
-                </div>
-            </div>
-            <div class="form-group">
-                      <label class="form-label">Address</label>
-                      <input type="text" id="address" class="form-input">
-                </div>
+        <p class="form-note">
+          In order to access some features of the Service, you will have fill
+          out your account details.
+        </p>
 
-
-            <div class="form-group hidden-item">
-                <label class="form-label">Gender <span style="color: #e74c3c;">*</span></label>
-                <div class="gender-selection">
-                    <div class="gender-option" data-gender="male">
-                        <div class="gender-icon">♂</div>
-                        <div class="gender-label">Male</div>
-                    </div>
-                    <div class="gender-option" data-gender="female">
-                        <div class="gender-icon">♀</div>
-                        <div class="gender-label">Female</div>
-                    </div>
-                </div>
-            </div>
-
-            <p class="form-note">
-                In order to access some features of the Service, you will have fill out your account details.
-            </p>
-
-            <div class="form-actions">
-                <button type="button" class="btn btn-cancel">Cancel</button>
-                <button type="submit" class="btn btn-save">Save</button>
-            </div>
-        </form>
+        <div class="form-actions">
+          <button type="button" class="btn btn-cancel">Cancel</button>
+          <button type="submit" class="btn btn-save">Save</button>
+        </div>
+      </form>
     </main>
 
-<script type="module">
+    <script type="module">
+      import { auth } from "../js/config/firebase.js";
+      import {
+        onAuthStateChanged,
+        signOut,
+      } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth.js";
+      import {
+        getUserData,
+        saveUserData,
+      } from "../js/services/user.service(1).js";
 
-    import { auth } from "../js/config/firebase.js";
-    import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth.js";
-    import { getUserData, saveUserData } from "../js/services/user.service(1).js";
+      // متغير للـ gender المختار
+      let selectedGender = undefined; // المستخدم لازم يختار بنفسه
 
-    // متغير للـ gender المختار
-    let selectedGender = undefined; // المستخدم لازم يختار بنفسه
+      // ────────────────────────────────────────────────
+      //    Gender selection handler (قبل كل حاجة عشان يشتغل فوراً)
+      // ────────────────────────────────────────────────
+      const genderOptions = document.querySelectorAll(".gender-option");
 
-    // ────────────────────────────────────────────────
-    //    Gender selection handler (قبل كل حاجة عشان يشتغل فوراً)
-    // ────────────────────────────────────────────────
-    const genderOptions = document.querySelectorAll(".gender-option");
-    
-    genderOptions.forEach(option => {
-        option.addEventListener("click", function() {
-            console.log("Gender clicked:", this.getAttribute("data-gender"));
-            // إزالة selected من كل العناصر
-            genderOptions.forEach(opt => opt.classList.remove("selected"));
-            // إضافة selected للعنصر المختار
-            this.classList.add("selected");
-            // حفظ القيمة
-            selectedGender = this.getAttribute("data-gender");
-            console.log("Selected gender:", selectedGender);
+      genderOptions.forEach((option) => {
+        option.addEventListener("click", function () {
+          console.log("Gender clicked:", this.getAttribute("data-gender"));
+          // إزالة selected من كل العناصر
+          genderOptions.forEach((opt) => opt.classList.remove("selected"));
+          // إضافة selected للعنصر المختار
+          this.classList.add("selected");
+          // حفظ القيمة
+          selectedGender = this.getAttribute("data-gender");
+          console.log("Selected gender:", selectedGender);
         });
-    });
+      });
 
-    // ────────────────────────────────────────────────
-    //    زر Sign Out (يشتغل قبل تسجيل الدخول)
-    // ────────────────────────────────────────────────
-    const logoutBtn = document.getElementById("logoutBtn");
+      // ────────────────────────────────────────────────
+      //    زر Sign Out (يشتغل قبل تسجيل الدخول)
+      // ────────────────────────────────────────────────
+      const logoutBtn = document.getElementById("logoutBtn");
 
-    logoutBtn.addEventListener("click", async () => {
+      logoutBtn.addEventListener("click", async () => {
         try {
-            await signOut(auth);
-            window.location.href = "login.html";
+          await signOut(auth);
+          window.location.href = "login.html";
         } catch (err) {
-            console.error("Sign-out error →", err);
-            alert("حصل مشكلة في تسجيل الخروج\n" + err.message);
+          console.error("Sign-out error →", err);
+          alert("حصل مشكلة في تسجيل الخروج\n" + err.message);
         }
-    });
+      });
 
-    // ────────────────────────────────────────────────
-    //    Authentication state change
-    // ────────────────────────────────────────────────
-    onAuthStateChanged(auth, async (user) => {
-                // لو اليوزر مش مسجل دخول أصلاً (مفيش Firebase Auth) → روح على login
+      // ────────────────────────────────────────────────
+      //    Authentication state change
+      // ────────────────────────────────────────────────
+      onAuthStateChanged(auth, async (user) => {
+        // لو اليوزر مش مسجل دخول أصلاً (مفيش Firebase Auth) → روح على login
         if (!user) {
-            window.location.href = "login.html";
-            return;
+          window.location.href = "login.html";
+          return;
         }
 
         if (user) {
-            try {
-                const data = await getUserData(user.uid);
+          try {
+            const data = await getUserData(user.uid);
 
-                console.log("User data from Firebase:", data); // للتأكد من البيانات
+            console.log("User data from Firebase:", data); // للتأكد من البيانات
 
-                // ملء الحقول بالبيانات من Firebase (لو موجودة)
-                // لو مفيش بيانات → الحقول هتفضل فاضية واليوزر يملاها
-                document.getElementById("fullName").value = data?.name || "";
-                document.getElementById("email").value = user.email || data?.email || "";
-                document.getElementById("phone").value = data?.phoneNumber || data?.phone || "";
-                document.getElementById("address").value = data?.address || "";
+            // ملء الحقول بالبيانات من Firebase (لو موجودة)
+            // لو مفيش بيانات → الحقول هتفضل فاضية واليوزر يملاها
+            document.getElementById("fullName").value = data?.name || "";
+            document.getElementById("email").value =
+              user.email || data?.email || "";
+            document.getElementById("phone").value =
+              data?.phoneNumber || data?.phone || "";
+            document.getElementById("address").value = data?.address || "";
 
-                // تحديد الـ gender المحفوظ
-                if (data?.gender) {
-                    selectedGender = data.gender;
-                    // الوصول للـ genderOptions اللي معرفة برة
-                    const allGenderOptions = document.querySelectorAll(".gender-option");
-                    allGenderOptions.forEach(option => {
-                        if (option.getAttribute("data-gender") === data.gender) {
-                            option.classList.add("selected");
-                        } else {
-                            option.classList.remove("selected");
-                        }
-                    });
+            // تحديد الـ gender المحفوظ
+            if (data?.gender) {
+              selectedGender = data.gender;
+              // الوصول للـ genderOptions اللي معرفة برة
+              const allGenderOptions =
+                document.querySelectorAll(".gender-option");
+              allGenderOptions.forEach((option) => {
+                if (option.getAttribute("data-gender") === data.gender) {
+                  option.classList.add("selected");
+                } else {
+                  option.classList.remove("selected");
                 }
-
-                // Sidebar information
-                document.getElementById("sidebarUserName").textContent = data?.name || user.email;
-
-            } catch (err) {
-                console.error("Error loading user data:", err);
-                // حتى لو حصل error → اليوزر يقدر يملأ البيانات عادي
+              });
             }
+
+            // Sidebar information
+            document.getElementById("sidebarUserName").textContent =
+              data?.name || user.email;
+          } catch (err) {
+            console.error("Error loading user data:", err);
+            // حتى لو حصل error → اليوزر يقدر يملأ البيانات عادي
+          }
         }
 
         // ──── Form Submit Handler ──────
         const form = document.getElementById("personalInfoForm");
 
         if (!form) {
-            console.error("Form element with id 'personalInfoForm' not found!");
-            return;
+          console.error("Form element with id 'personalInfoForm' not found!");
+          return;
         }
 
         form.addEventListener("submit", async (e) => {
-            e.preventDefault();
+          e.preventDefault();
 
-            if (!user) {
-                alert("You must be logged in to save your profile.");
-                return;
-            }
+          if (!user) {
+            alert("You must be logged in to save your profile.");
+            return;
+          }
 
-            const userData = {
-                name   : document.getElementById("fullName").value.trim(),
-                email  : document.getElementById("email").value,
-                phoneNumber: document.getElementById("phone").value.trim(), // تغيير من phone إلى phoneNumber
-                address: document.getElementById("address").value.trim()
-            };
+          const userData = {
+            name: document.getElementById("fullName").value.trim(),
+            email: document.getElementById("email").value,
+            phoneNumber: document.getElementById("phone").value.trim(), // تغيير من phone إلى phoneNumber
+            address: document.getElementById("address").value.trim(),
+          };
 
-            // إضافة gender فقط لو كان موجود (في حالة إظهاره مستقبلاً)
-            if (selectedGender) {
-                userData.gender = selectedGender;
-            }
+          // إضافة gender فقط لو كان موجود (في حالة إظهاره مستقبلاً)
+          if (selectedGender) {
+            userData.gender = selectedGender;
+          }
 
-            try {
-                await saveUserData(user.uid, userData);
-                alert("Profile saved successfully ❤️");
-                
-                // تحديث الاسم في الـ sidebar
-                document.getElementById("sidebarUserName").textContent = userData.name || user.email;
-                
-            } catch (err) {
-                console.error("Save error:", err);
-                alert("حصل خطأ أثناء الحفظ، جربي تاني\n" + err.message);
-            }
+          try {
+            await saveUserData(user.uid, userData);
+            alert("Profile saved successfully ❤️");
+
+            // تحديث الاسم في الـ sidebar
+            document.getElementById("sidebarUserName").textContent =
+              userData.name || user.email;
+          } catch (err) {
+            console.error("Save error:", err);
+            alert("حصل خطأ أثناء الحفظ، جربي تاني\n" + err.message);
+          }
         });
-    });
-
-
-</script>
-</body>
+      });
+    </script>
+  </body>
 </html>

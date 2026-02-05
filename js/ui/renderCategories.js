@@ -44,7 +44,7 @@ export var CategoriesUI = {
     name.textContent = category.name || 'Unknown Category';
     card.appendChild(name);
     card.onclick = function() {
-      window.location.href = 'product.html?category=' + category.id;
+      window.location.href = 'public/product.html?category=' + category.id;
     };
     
     return card;

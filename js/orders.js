@@ -43,7 +43,7 @@ function displayOrders(orders) {
                 <div class="empty-icon">📦</div>
                 <h3>No Orders Yet</h3>
                 <p>You haven't placed any orders. Start shopping!</p>
-                <button class="empty-btn" onclick="location.href='index.html'">Start Shopping</button>
+                <button class="empty-btn" onclick="location.href='../index.html'">Start Shopping</button>
             </div>`;
     return;
   }

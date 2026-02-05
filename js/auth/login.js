@@ -110,7 +110,7 @@ registerSubmitBtn.addEventListener("click", (e) => {
       localStorage.setItem("userPhone", registerPhone.value);
       localStorage.setItem("userAddress", registerAddress.value);
 
-      window.location.href = "../public/index.html";
+      window.location.href = "../index.html";
     })
     .catch((error) => {
       showError(registerEmail, error.message);
@@ -189,7 +189,7 @@ onAuthStateChanged(auth, async (user) => {
     if (role === "admin") {
       window.location.href = "../admin/dashboard.html";
     } else {
-      window.location.href = "../public/index.html";
+      window.location.href = "../index.html";
     }
   } catch (error) {
     console.error("Error fetching user data:", error);

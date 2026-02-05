@@ -75,7 +75,7 @@ addBtn.onclick = function(e) {
     card.appendChild(infoContainer);
 
 card.onclick = function() {
-    window.location.href = `product_details.html?id=${product.id}`;
+    window.location.href = `public/product_details.html?id=${product.id}`;
 };
     
     return card;
@@ -153,7 +153,7 @@ renderCategoriesSidebar: function(categories, activeCategoryId) {
       item.className = 'category-item' + (category.id === activeCategoryId ? ' active' : '');
       
       var link = document.createElement('a');
-      link.href = 'product.html?category=' + category.id;
+      link.href = 'public/product.html?category=' + category.id;
       link.textContent = category.name;
       
       item.appendChild(link);

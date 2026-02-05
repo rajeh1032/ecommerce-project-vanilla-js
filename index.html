@@ -3,12 +3,11 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Aladdin - Products</title>
+    <title>Aladdin - Home</title>
     <link
       href="https://fonts.googleapis.com/icon?family=Material+Icons"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="../assets/css/product.css" />
     <link rel="stylesheet" href="../assets/css/main.css" />
     <link rel="icon" href="../assets/images/applogo.png" type="image/x-icon" />
   </head>
@@ -16,7 +15,7 @@
     <header class="main-header">
       <nav class="navbar">
         <div class="logo">
-          <a href="../index.html">
+          <a href="index.html">
             <svg
               width="99"
               height="39"
@@ -74,11 +73,13 @@
         </div>
 
         <ul class="nav-links" id="nav-links">
-          <li><a href="../index.html">Home</a></li>
-          <li><a href="product.html" class="active">Shop</a></li>
-          <li id="auth-links"><a href="profile(1).html">My Profile</a></li>
+          <li><a href="index.html" class="active">Home</a></li>
+          <li><a href="public/product.html">Shop</a></li>
+          <li id="auth-links">
+            <a href="public/profile(1).html">My Profile</a>
+          </li>
           <li>
-            <a href="cart.html" class="cart-link">
+            <a href="public/cart.html" class="cart-link">
               <span class="icon-cart">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -100,23 +101,26 @@
       </nav>
     </header>
 
-    <main class="product-page-container">
-      <aside class="sidebar">
-        <h3 class="sidebar-title">Categories</h3>
-        <ul class="category-list"></ul>
-      </aside>
-      <section class="products-content">
-        <header class="products-header">
-          <h2 id="current-category">Loading...</h2>
-        </header>
-        <div class="products-grid"></div>
+    <main>
+      <section class="hero-section">
+        <div class="slider-container" id="slider-wrapper"></div>
+        <button class="slider-arrow prev" id="prevBtn">&#10094;</button>
+        <button class="slider-arrow next" id="nextBtn">&#10095;</button>
+      </section>
+      <section class="categories-section">
+        <div class="section-header">
+          <h2>Explore categories</h2>
+          <a href="public/product.html" class="see-all">See all &#10095;</a>
+        </div>
+        <div class="categories-grid" id="categories-container"></div>
       </section>
     </main>
+
     <footer class="main-footer">
       <div class="footer-container">
         <div class="footer-about">
           <div class="logo">
-            <a href="../index.html">
+            <a href="index.html">
               <svg
                 width="119"
                 height="56"

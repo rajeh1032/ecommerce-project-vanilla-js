@@ -1,87 +1,93 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Checkout - Aladdin</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../assets/css/checkout.css">
-</head>
-<body>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Playfair+Display:wght@600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../assets/css/checkout.css" />
+    <link rel="icon" href="../assets/images/applogo.png" type="image/x-icon" />
+  </head>
+  <body>
     <div class="container">
-        <div class="content-grid">
-            <!-- Checkout Section -->
-            <div class="shipping-section">
-                <h1 class="section-title">Checkout</h1>
-                
-                <!-- Shipping Options - Can be hidden by adding class "hidden" -->
-                <div class="shipping-options" id="shippingOptions">
-                    <label class="shipping-option">
-                        <input type="radio" name="shipping" value="standard" checked>
-                        <div class="option-content">
-                            <div class="option-info">
-                                <span class="option-name">Standard</span>
-                                <span class="delivery-date">Delivery Friday, February 13</span>
-                            </div>
-                            <span class="option-price">Free</span>
-                        </div>
-                    </label>
+      <div class="content-grid">
+        <!-- Checkout Section -->
+        <div class="shipping-section">
+          <h1 class="section-title">Checkout</h1>
 
-                    <label class="shipping-option">
-                        <input type="radio" name="shipping" value="express">
-                        <div class="option-content">
-                            <div class="option-info">
-                                <span class="option-name">Express</span>
-                                <span class="delivery-date">Delivered Tomorrow</span>
-                            </div>
-                            <span class="option-price">$12.87</span>
-                        </div>
-                    </label>
+          <!-- Shipping Options - Can be hidden by adding class "hidden" -->
+          <div class="shipping-options" id="shippingOptions">
+            <label class="shipping-option">
+              <input type="radio" name="shipping" value="standard" checked />
+              <div class="option-content">
+                <div class="option-info">
+                  <span class="option-name">Standard</span>
+                  <span class="delivery-date"
+                    >Delivery Friday, February 13</span
+                  >
                 </div>
-            </div>
+                <span class="option-price">Free</span>
+              </div>
+            </label>
 
-            <!-- Order Summary -->
-            <div class="order-summary">
-                <h2 class="summary-title">Order Summary</h2>
-                <div class="items-count"><span id="itemCount">0</span> Item</div>
-                
-                <div class="order-items" id="orderItems">
-                    <div class="loading-spinner">
-                        <div class="spinner"></div>
-                        <p>Loading your cart...</p>
-                    </div>
+            <label class="shipping-option">
+              <input type="radio" name="shipping" value="express" />
+              <div class="option-content">
+                <div class="option-info">
+                  <span class="option-name">Express</span>
+                  <span class="delivery-date">Delivered Tomorrow</span>
                 </div>
-
-                <div class="order-totals">
-                    <div class="total-row">
-                        <span>SUBTOTAL</span>
-                        <span id="subtotal">$0.00</span>
-                    </div>
-                    <div class="total-row">
-                        <span>Shipping</span>
-                        <span id="shippingCost">$0.00</span>
-                    </div>
-                    <div class="total-row grand-total">
-                        <span>Order total</span>
-                        <span id="orderTotal">$0.00</span>
-                    </div>
-                </div>
-
-                <button class="submit-btn" id="submitBtn">Submit</button>
-            </div>
+                <span class="option-price">$12.87</span>
+              </div>
+            </label>
+          </div>
         </div>
+
+        <!-- Order Summary -->
+        <div class="order-summary">
+          <h2 class="summary-title">Order Summary</h2>
+          <div class="items-count"><span id="itemCount">0</span> Item</div>
+
+          <div class="order-items" id="orderItems">
+            <div class="loading-spinner">
+              <div class="spinner"></div>
+              <p>Loading your cart...</p>
+            </div>
+          </div>
+
+          <div class="order-totals">
+            <div class="total-row">
+              <span>SUBTOTAL</span>
+              <span id="subtotal">$0.00</span>
+            </div>
+            <div class="total-row">
+              <span>Shipping</span>
+              <span id="shippingCost">$0.00</span>
+            </div>
+            <div class="total-row grand-total">
+              <span>Order total</span>
+              <span id="orderTotal">$0.00</span>
+            </div>
+          </div>
+
+          <button class="submit-btn" id="submitBtn">Submit</button>
+        </div>
+      </div>
     </div>
 
     <!-- Success Message Modal -->
     <div class="overlay" id="overlay"></div>
     <div class="success-message" id="successMessage">
-        <div class="success-icon">✓</div>
-        <h2 style="margin-bottom: 10px;">Order Submitted Successfully!</h2>
-        <p style="color: var(--text-gray);">Your order has been placed.</p>
+      <div class="success-icon">✓</div>
+      <h2 style="margin-bottom: 10px">Order Submitted Successfully!</h2>
+      <p style="color: var(--text-gray)">Your order has been placed.</p>
     </div>
 
     <script type="module" src="../js/checkout.js"></script>
-</body>
+  </body>
 </html>
