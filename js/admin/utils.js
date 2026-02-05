@@ -1,4 +1,4 @@
-// ================== LOADING FUNCTIONS ==================
+//  LOADING FUNCTIONS
 
 const loadingOverlay = document.getElementById("loadingOverlay");
 
@@ -24,7 +24,7 @@ export function hideButtonLoading(button) {
   button.disabled = false;
 }
 
-// ================== Modal FUNCTIONS ==================
+//  MODAL FUNCTIONS
 export function openModal(modal) {
   modal.style.display = "flex";
   document.body.style.overflow = "hidden";
@@ -33,7 +33,7 @@ export function closeModal(modal) {
   modal.style.display = "none";
   document.body.style.overflow = "auto";
 }
-// ================== Images Utils ==================
+//  Images Utils
 export function formatImageSrc(
   imageUrl,
   fallback = "../assets/images/default-image.png",

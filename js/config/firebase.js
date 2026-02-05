@@ -20,6 +20,7 @@ import {
   query,
   orderBy,
   where,
+  setDoc,
 } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -53,4 +54,5 @@ export {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   signOut,
+  setDoc,
 };

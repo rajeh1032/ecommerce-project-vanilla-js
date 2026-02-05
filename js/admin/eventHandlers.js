@@ -39,7 +39,7 @@ async function handleGlobalClick(e) {
     closeEditModal(modals.editUser);
   }
 
-  // ===== CATEGORY HANDLERS =====
+  //  CATEGORY HANDLERS 
   if (e.target.classList.contains("edit-category")) {
     handleEditCategory(e.target);
   }
@@ -59,7 +59,7 @@ async function handleGlobalClick(e) {
     closeEditModal(modals.category);
   }
 
-  // ===== PRODUCT HANDLERS =====
+  //  PRODUCT HANDLERS 
   if (e.target.classList.contains("edit-product")) {
     handleEditProduct(e.target);
   }
@@ -79,7 +79,7 @@ async function handleGlobalClick(e) {
     closeEditModal(modals.product);
   }
 
-  // ===== ORDER HANDLERS =====
+  //  ORDER HANDLERS 
   if (e.target.classList.contains("edit-order")) {
     handleEditOrder(e.target);
   }

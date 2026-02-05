@@ -6,7 +6,7 @@ import {
   loadProductsData,
   loadOrdersData,
 } from "./dataLoader.js";
-// ================== SPA NAVIGATION ==================
+//  SPA NAVIGATION 
 const mainContent = document.getElementById("content");
 const menuLinks = document.querySelectorAll(".menu ul li a");
 
@@ -56,7 +56,7 @@ async function loadPageData(pageName) {
     hideLoading();
   }
 }
-// ================== PAGE NAVIGATION SETUP ==================
+//  PAGE NAVIGATION SETUP 
 export function setupNavigation() {
   const homePageContent = document.getElementById("homePageContent");
   const usersPageContent = document.getElementById("usersPageContent");

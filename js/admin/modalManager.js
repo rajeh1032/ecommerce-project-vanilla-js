@@ -1,5 +1,5 @@
 import { openModal, closeModal } from "./utils.js";
-// ================== MODAL STATE ==================
+//  MODAL STATE 
 export let currentEditId = null;
 export let currentEditType = null;
 
@@ -11,7 +11,7 @@ export function clearEditState() {
   currentEditId = null;
   currentEditType = null;
 }
-// ================== MODAL ELEMENTS ==================
+//  MODAL ELEMENTS 
 export const modals = {
   editUser: document.getElementById("editUserModal"),
   category: document.getElementById("categoryModal"),
@@ -23,7 +23,7 @@ export const modalTitles = {
   product: document.getElementById("productModalTitle"),
   order: document.getElementById("orderModalTitle"),
 };
-// ================== MODAL WRAPPER FUNCTIONS ==================
+//  MODAL WRAPPER FUNCTIONS 
 export function openEditModal(modal) {
   openModal(modal);
 }

@@ -1,4 +1,4 @@
-// ================== HELPER FUNCTIONS ==================
+//  HELPER FUNCTIONS 
 
 // Convert file to base64
 export function convertToBase64(file) {

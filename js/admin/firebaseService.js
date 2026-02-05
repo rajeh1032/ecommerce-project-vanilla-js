@@ -13,7 +13,7 @@ import {
 } from "../config/firebase.js";
 import { prepareImage, convertToBase64 } from "./helper.js";
 
-// ================== CATEGORY OPERATIONS ==================
+//  CATEGORY OPERATIONS 
 export async function getCategories() {
   try {
     const querySnapshot = await getDocs(collection(db, "categories"));
@@ -71,7 +71,7 @@ export async function deleteCategory(categoryId) {
   }
 }
 
-// ================== PRODUCT OPERATIONS ==================
+//  PRODUCT OPERATIONS 
 export async function getProducts() {
   try {
     const querySnapshot = await getDocs(collection(db, "products"));
@@ -144,7 +144,7 @@ export async function deleteProduct(productId) {
   }
 }
 
-// ================== USER OPERATIONS ==================
+//  USER OPERATIONS 
 export async function getUsers() {
   try {
     const querySnapshot = await getDocs(collection(db, "users"));
@@ -185,7 +185,7 @@ export async function deleteUser(userId) {
   }
 }
 
-// ================== ORDER OPERATIONS ==================
+//  ORDER OPERATIONS 
 export async function getOrders() {
   try {
     const querySnapshot = await getDocs(collection(db, "orders"));

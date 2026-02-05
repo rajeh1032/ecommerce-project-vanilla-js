@@ -20,7 +20,7 @@ import {
   updateOrderStatus,
 } from "./firebaseService.js";
 
-// ================== FORM SUBMISSIONS ==================
+//  FORM SUBMISSIONS 
 export function setupFormHandlers() {
   setupUserForm();
   setupCategoryForm();
@@ -28,7 +28,7 @@ export function setupFormHandlers() {
   setupOrderForm();
 }
 
-// ===== USER FORM =====
+//  USER FORM 
 function setupUserForm() {
   const userForm = modals.editUser.querySelector("form");
 
@@ -61,7 +61,7 @@ function setupUserForm() {
   });
 }
 
-// ===== CATEGORY FORM =====
+//  CATEGORY FORM 
 function setupCategoryForm() {
   const categoryForm = document.getElementById("categoryForm");
 
@@ -99,7 +99,7 @@ function setupCategoryForm() {
   });
 }
 
-// ===== PRODUCT FORM =====
+//  PRODUCT FORM 
 function setupProductForm() {
   const productForm = document.getElementById("productForm");
 
@@ -140,7 +140,7 @@ function setupProductForm() {
   });
 }
 
-// ===== ORDER FORM =====
+//  ORDER FORM 
 function setupOrderForm() {
   const orderForm = document.getElementById("orderForm");
 
