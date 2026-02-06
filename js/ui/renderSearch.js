@@ -91,7 +91,7 @@ export var SearchUI = {
   },
 
   redirectToProductsPage: function (searchTerm, categoryId) {
-    var url = "public/product.html";
+    var url = "product.html";
     var params = [];
 
     if (searchTerm) {

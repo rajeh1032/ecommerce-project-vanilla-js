@@ -12,7 +12,7 @@ export var ProductDetailsUI = {
 
     var priceElement = document.getElementById('product-price');
     if (priceElement) {
-        priceElement.textContent = (product.price) + ' EGP';
+        priceElement.textContent = (product.price) + '$';
     }
 
     var descElement = document.getElementById('product-desc');

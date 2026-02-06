@@ -43,7 +43,7 @@ function displayOrders(orders) {
                 <div class="empty-icon">📦</div>
                 <h3>No Orders Yet</h3>
                 <p>You haven't placed any orders. Start shopping!</p>
-                <button class="empty-btn" onclick="location.href='../index.html'">Start Shopping</button>
+                <button class="empty-btn" onclick="location.href='index.html'">Start Shopping</button>
             </div>`;
     return;
   }
@@ -61,9 +61,6 @@ function buildOrderCard(order) {
       <div class="order-card">
         <div class="order-header">
           <div class="order-info">
-            <div class="order-id">
-              Order #${order.id.substring(0, 8).toUpperCase()}
-            </div>
             <div class="order-date">${date}</div>
           </div>
           <div class="order-status status-${statusRaw}">
@@ -99,10 +96,6 @@ function buildOrderCard(order) {
             <span>Total</span>
             <span class="total-amount">$${order.total.toFixed(2)}</span>
           </div>
-          <button class="btn-details"
-            onclick="openModal('${order.id}')">
-            View Details
-          </button>
         </div>
       </div>
     `;
@@ -148,11 +141,9 @@ window.openModal = function (orderId) {
   document.getElementById("modalBody").innerHTML = `
         <div class="modal-section">
             <div class="modal-section-title">Order Information</div>
-            <div class="modal-row"><span class="modal-label">Order ID</span><span class="modal-value">#${order.id.substring(0, 8).toUpperCase()}</span></div>
             <div class="modal-row"><span class="modal-label">Date</span><span class="modal-value">${formatDate(order.createdAt)}</span></div>
             <div class="modal-row"><span class="modal-label">Status</span><span class="order-status status-${statusRaw}">${capitalize(statusRaw)}</span></div>
             <div class="modal-row"><span class="modal-label">Customer</span><span class="modal-value">${escapeHtml(order.userName)}</span></div>
-            <div class="modal-row"><span class="modal-label">Phone</span><span class="modal-value">${escapeHtml(order.userPhone)}</span></div>
         </div>
 
         <div class="modal-section">
@@ -218,3 +209,4 @@ function showError(msg) {
 }
 
 document.addEventListener("DOMContentLoaded", initPage);
+

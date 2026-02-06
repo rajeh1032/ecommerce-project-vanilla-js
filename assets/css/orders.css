@@ -24,7 +24,6 @@ body {
     background-color: var(--bg-light);
     color: var(--text-dark);
     line-height: 1.6;
-    padding: 48px 24px;
 }
 
 .container {
@@ -445,17 +444,3 @@ body {
     color: var(--primary-teal);
 }
 
-/* ─── Responsive ─── */
-@media (max-width: 600px) {
-    body { padding: 24px 14px; }
-
-    .page-title { font-size: 30px; }
-
-    .order-header { flex-direction: column; align-items: flex-start; gap: 8px; }
-
-    .order-footer { flex-direction: column; align-items: stretch; gap: 14px; }
-
-    .order-actions { flex-direction: column; }
-
-    .btn-details { text-align: center; }
-}

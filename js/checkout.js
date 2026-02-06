@@ -93,28 +93,28 @@ function displayCart(cartItems) {
       }
     }
 
+    // --- التعديل هنا: مطابقة الـ HTML مع الـ CSS ---
     itemsHTML += `
-            <div class="order-item">
-                <div class="item-image">
-                    ${
-                      imgSrc
-                        ? `<img src="${imgSrc}" alt="${escapeHtml(item.productName || item.name || "Product")}">`
-                        : `<div class="placeholder-image">📦</div>`
-                    }
-                </div>
+            <div class="item-card">
                 <div class="item-details">
-                    <h3 class="item-title">${escapeHtml(item.productName || item.details || "Product")}</h3>
-                    <p class="item-brand">Brand: Aladdin</p>
-                    <p class="item-price">$${itemTotal.toFixed(2)}</p>
+                    <p class="product-name">${escapeHtml(item.productName || item.name || "Product")}</p>
+                    <p class="brand-name">Brand: Aladdin</p>
+                    <p class="price">$${itemTotal.toFixed(2)}</p>
                     ${quantity > 1 ? `<p class="item-quantity">Qty: ${quantity}</p>` : ""}
                 </div>
+                ${
+                  imgSrc
+                    ? `<img src="${imgSrc}" alt="Product" class="item-image">`
+                    : `<div class="placeholder-image item-image">📦</div>`
+                }
             </div>
         `;
+    // ---------------------------------------------
   });
 
   orderItemsContainer.innerHTML = itemsHTML;
-  itemCountElement.textContent = cartItems.length;
-
+  
+  // تحديث عدد العناصر في الأعلى
   const itemCountContainer = document.querySelector(".items-count");
   if (itemCountContainer) {
     itemCountContainer.innerHTML = `<span id="itemCount">${cartItems.length}</span> Item${cartItems.length !== 1 ? "s" : ""}`;
@@ -224,13 +224,13 @@ async function handleSubmit() {
     const ordersCollection = collection(db, "orders");
     try {
       await addDoc(ordersCollection, orderData).then(async () => {
-        alert("Order submitted successfully");
+        // alert("Order submitted successfully");
         window.location.href = "completed.html";
         await clearCart();
       });
     } catch (error) {
       console.error("Error submitting order:", error);
-      alert(error.message);
+      // alert(error.message);
     }
     // Clear cart after successful order
 
@@ -243,7 +243,7 @@ async function handleSubmit() {
     }, 2000);
   } catch (error) {
     console.error("Error submitting order:", error);
-    alert("Failed to submit order. Please try again.");
+    // alert("Failed to submit order. Please try again.");
     submitBtn.disabled = false;
     submitBtn.textContent = "Submit";
   }
