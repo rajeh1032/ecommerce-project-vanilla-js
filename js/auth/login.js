@@ -30,8 +30,22 @@ function validateEmail(email) {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return emailRegex.test(email);
 }
-function validatePassword(password) {
-  return password.length >= 6;
+function validateName(name) {
+  // حروف فقط + مسافات، وطول ≥ 2
+  const nameRegex = /^[A-Za-z\u0600-\u06FF ]{2,}$/;
+  return nameRegex.test(name.trim());
+}
+
+function validatePhone(phone) {
+  // مصري: 010 / 011 / 012 / 015 + 8 أرقام
+  const phoneRegex = /^(010|011|012|015)[0-9]{8}$/;
+  return phoneRegex.test(phone);
+}
+
+function validatePasswordStrong(password) {
+  // 8 حروف على الأقل + حرف + رقم
+  const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d).{8,}$/;
+  return passwordRegex.test(password);
 }
 function showError(input, message) {
   removeError(input);
@@ -56,11 +70,18 @@ function removeError(input) {
 // REGISTER
 registerSubmitBtn.addEventListener("click", (e) => {
   e.preventDefault();
-
   const email = registerEmail.value.trim();
   const password = registerPassword.value;
+
+  const firstName = registerFirstName.value.trim();
+  const lastName = registerLastName.value.trim();
+  const phone = registerPhone.value.trim();
+
   removeError(registerEmail);
   removeError(registerPassword);
+  removeError(registerFirstName);
+  removeError(registerLastName);
+  removeError(registerPhone);
 
   // Validation
   if (!email) {
@@ -78,8 +99,36 @@ registerSubmitBtn.addEventListener("click", (e) => {
     return;
   }
 
-  if (!validatePassword(password)) {
-    showError(registerPassword, "Password must be at least 6 characters");
+  if (!validatePasswordStrong(password)) {
+    showError(registerPassword, "Password must be at least 8 characters with at least one letter and one number");
+    return;
+  }
+  if (!firstName) {
+    showError(registerFirstName, "First name is required");
+    return;
+  }
+  if (!validateName(firstName)) {
+    showError(registerFirstName, "Invalid name");
+    return;
+  }
+
+  // Last Name
+  if (!lastName) {
+    showError(registerLastName, "Last name is required");
+    return;
+  }
+  if (!validateName(lastName)) {
+    showError(registerLastName, "Invalid name");
+    return;
+  }
+
+  // Phone
+  if (!phone) {
+    showError(registerPhone, "Phone number is required");
+    return;
+  }
+  if (!validatePhone(phone)) {
+    showError(registerPhone, "Invalid Egyptian phone number");
     return;
   }
 
@@ -136,8 +185,8 @@ loginSubmitBtn.addEventListener("click", (e) => {
     showError(loginPassword, "Password is required");
     return;
   }
-  if (!validatePassword(password)) {
-    showError(loginPassword, "Password must be at least 6 characters");
+  if (!validatePasswordStrong(password)) {
+    showError(loginPassword, "Password must be at least 8 characters with at least one letter and one number");
     return;
   }
 
