@@ -185,10 +185,10 @@ loginSubmitBtn.addEventListener("click", (e) => {
     showError(loginPassword, "Password is required");
     return;
   }
-  if (!validatePasswordStrong(password)) {
-    showError(loginPassword, "Password must be at least 8 characters with at least one letter and one number");
-    return;
-  }
+  // if (!validatePasswordStrong(password)) {
+  //   showError(loginPassword, "Password must be at least 8 characters with at least one letter and one number");
+  //   return;
+  // }
 
   signInWithEmailAndPassword(auth, email, password)
     .then(async (userCredential) => {
