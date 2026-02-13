@@ -203,12 +203,16 @@ loginSubmitBtn.addEventListener("click", (e) => {
       let role = "user";
       let userName = "";
       let userDocId = "";
+      let userPhone = "";   
+      let userAddress = "";
 
       if (!snapshot.empty) {
         const userData = snapshot.docs[0].data();
         role = userData.role;
         userName = userData.name;
         userDocId = snapshot.docs[0].id;
+        userPhone = userData.phone || ""; 
+        userAddress = userData.address || "";
       }
 
       // Store user info in localStorage
@@ -217,6 +221,8 @@ loginSubmitBtn.addEventListener("click", (e) => {
       localStorage.setItem("userRole", role);
       localStorage.setItem("userName", userName);
       localStorage.setItem("userDocId", userDocId);
+      localStorage.setItem("userPhone", userPhone);
+      localStorage.setItem("userAddress", userAddress);
     })
     .catch((error) => {
       showError(loginEmail, error.message);

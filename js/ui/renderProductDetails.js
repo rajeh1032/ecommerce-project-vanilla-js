@@ -1,3 +1,5 @@
+import { CartService } from "../services/cart.service.js";
+
 export var ProductDetailsUI = {
   renderProductDetails: function(product) {
     if (!product) {
@@ -22,7 +24,7 @@ export var ProductDetailsUI = {
 
     var statusElement = document.getElementById('product-status');
     if (statusElement) {
-        var isInStock = product.status === 'inStock' || product.quantity > 0;
+        var isInStock = product.status === 'in-stock' ;
         statusElement.textContent = isInStock ? 'In Stock' : 'Out of Stock';
         statusElement.className = 'status-badge ' + (isInStock ? 'in-stock' : 'out-of-stock');
     }
@@ -37,8 +39,9 @@ renderProductImage: function(product) {
     if (!imageContainer) return;
 
     imageContainer.innerHTML = '';
+    
     var img = document.createElement('img');
-    var rawImageData = product.imageUrl;
+    var rawImageData = product.imageUrl || product.image;
     var imgSrc = "";
 
     if (rawImageData) {
@@ -50,7 +53,47 @@ renderProductImage: function(product) {
         }
     }
     img.src = imgSrc;
+
+    var favBtn = document.createElement('button');
+    favBtn.className = 'fav-btn';
+    
+    var favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+    var isFav = favorites.some(f => f.id === product.id);
+
+    favBtn.innerHTML = isFav ? 
+        '<span class="material-icons" style="color:red">favorite</span>' : 
+        '<span class="material-icons">favorite_border</span>';
+
+    favBtn.onclick = (e) => {
+        e.stopPropagation();
+        this.toggleFavorite(product, favBtn);
+    };
+
     imageContainer.appendChild(img);
+    imageContainer.appendChild(favBtn);
+},
+
+toggleFavorite: function(product, btnElement) {
+    var favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+    var index = favorites.findIndex(f => f.id === product.id);
+
+    if (index === -1) {
+        favorites.push({
+            id: product.id,
+            name: product.name,
+            price: product.price,
+            image: product.imageUrl || product.image
+        });
+        btnElement.innerHTML = '<span class="material-icons" style="color:red">favorite</span>';
+        this.showStatusMessage(`${product.name} added to favorites!`);
+    } else {
+        favorites.splice(index, 1);
+        btnElement.innerHTML = '<span class="material-icons">favorite_border</span>';
+        this.showStatusMessage(`${product.name} removed from favorites!`);
+    }
+
+    localStorage.setItem('favorites', JSON.stringify(favorites));
+    window.updateGlobalFavCount();
 },
 
   setupQuantityControls: function(product) {
@@ -95,35 +138,29 @@ renderProductImage: function(product) {
     };
   },
 
-  addToCart: function(product, quantity) {
-    var cart = JSON.parse(localStorage.getItem('cart')) || [];
-    var existingItemIndex = -1;
-    for (var i = 0; i < cart.length; i++) {
-      if (cart[i].id === product.id) {
-        existingItemIndex = i;
-        break;
-      }
+  setupAddToCartButton: function(product) {
+
+    var addToCartBtn = document.querySelector('.add-to-cart-btn');
+    if (!addToCartBtn) return;
+
+    if (product.stock <= 0) {
+        addToCartBtn.disabled = true;
+        addToCartBtn.textContent = 'Out of Stock';
+        return;
     }
 
-    if (existingItemIndex !== -1) {
-      cart[existingItemIndex].quantity += quantity;
-    } else {
-      cart.push({
-        id: product.id,
-        name: product.name,
-        price: product.price,
-        image: product.image || product.imageUrl,
-        quantity: quantity
-      });
-    }
+  addToCartBtn.onclick = function() {
+      var qtyInput = document.getElementById('qty-input');
+      var quantity = parseInt(qtyInput.value) || 1;
 
-    localStorage.setItem('cart', JSON.stringify(cart));
+      const result = CartService.addToCart(product, quantity);
 
-    this.updateCartCount();
+      if(window.updateGlobalCartCount)
+          window.updateGlobalCartCount();
 
-    this.showSuccessMessage('Product added to cart successfully!');
-  },
-
+      ProductDetailsUI.showStatusMessage(result.message, !result.success);
+  }
+},
   updateCartCount: function() {
     var cart = JSON.parse(localStorage.getItem('cart')) || [];
     var totalItems = 0;
@@ -138,12 +175,11 @@ renderProductImage: function(product) {
     }
   },
 
-  showSuccessMessage: function(message) {
+  showStatusMessage: function(message, isError = false) {
     var notification = document.createElement('div');
-    notification.className = 'success-notification';
+    const bgColor = isError ? '#f44336' : '#4CAF50';
+    notification.style.cssText = `position: fixed; top: 20px; right: 20px; background: ${bgColor}; color: white; padding: 15px 20px; border-radius: 5px; z-index: 9999;`;
     notification.textContent = message;
-    notification.style.cssText = 'position: fixed; top: 20px; right: 20px; background: #4CAF50; color: white; padding: 15px 20px; border-radius: 5px; z-index: 9999; animation: slideIn 0.3s ease;';
-    
     document.body.appendChild(notification);
 
     setTimeout(function() {

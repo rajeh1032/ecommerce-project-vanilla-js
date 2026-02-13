@@ -1,6 +1,8 @@
+import { CartService } from "../services/cart.service.js";
+
 export var CartUI = {
     renderCart: function() {
-        var cart = JSON.parse(localStorage.getItem('cart')) || [];
+        var cart = CartService.getCart()
         var tbody = document.querySelector('.cart-table tbody');
         var cartTitle = document.querySelector('.cart-title');
         var totalPriceElement = document.querySelector('.cart-footer .total strong');
@@ -66,27 +68,13 @@ export var CartUI = {
 };
 
 window.changeQty = function(index, delta) {
-    var cart = JSON.parse(localStorage.getItem('cart')) || [];
-    if (cart[index]) {
-        cart[index].quantity += delta;
-        if (cart[index].quantity < 1) cart[index].quantity = 1;
-        localStorage.setItem('cart', JSON.stringify(cart));
-        CartUI.renderCart();
-        updateGlobalCartCount();
-    }
+    CartService.changeQty(index, delta);
+    CartUI.renderCart();
+    if(window.updateGlobalCartCount) window.updateGlobalCartCount();
 };
 
 window.removeFromCart = function(index) {
-    var cart = JSON.parse(localStorage.getItem('cart')) || [];
-    cart.splice(index, 1);
-    localStorage.setItem('cart', JSON.stringify(cart));
+    CartService.removeItem(index);
     CartUI.renderCart();
-    updateGlobalCartCount();
+    if(window.updateGlobalCartCount) window.updateGlobalCartCount();
 };
-
-function updateGlobalCartCount() {
-    var cart = JSON.parse(localStorage.getItem('cart')) || [];
-    var count = cart.reduce((acc, item) => acc + item.quantity, 0);
-    var badge = document.getElementById('cart-count');
-    if (badge) badge.textContent = count;
-}

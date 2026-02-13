@@ -1,5 +1,6 @@
 export var FavoritesUI = {
-    renderFavorites: function() {
+
+renderFavorites: function() {
         var favorites = JSON.parse(localStorage.getItem('favorites')) || [];
         var container = document.querySelector('.favorites-grid');
         var titleElement = document.getElementById('current-category');
@@ -19,7 +20,7 @@ export var FavoritesUI = {
         });
     },
 
-    createFavoriteCard: function(product) {
+createFavoriteCard: function(product) {
         var card = document.createElement('div');
         card.className = 'product-card';
 
@@ -42,7 +43,7 @@ export var FavoritesUI = {
             if (rawImageData.startsWith('http') || rawImageData.startsWith('data:image')) {
                 imgSrc = rawImageData;
             } else {
-                imgSrc = 'data:image/png;base64,' + rawImageData;
+                imgSrc = rawImageData;
             }
         }
 
@@ -63,18 +64,9 @@ export var FavoritesUI = {
         price.className = 'product-price';
         price.textContent = `${product.price} EGP`;
 
-        var addBtn = document.createElement('button');
-        addBtn.className = 'add-to-cart';
-        addBtn.innerHTML = '<span class="material-icons">add_shopping_cart</span>';
-        addBtn.onclick = (e) => {
-            e.stopPropagation();
-            this.moveToCart(product);
-        };
 
         infoContainer.appendChild(name);
-        infoContainer.appendChild(price);
-        infoContainer.appendChild(addBtn); 
-        
+        infoContainer.appendChild(price);        
         card.appendChild(infoContainer);
 
         card.onclick = () => {
@@ -83,41 +75,36 @@ export var FavoritesUI = {
         return card;
     },
 
-    removeFromFav: function(productId) {
-        let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
-        favorites = favorites.filter(f => f.id !== productId);
-        localStorage.setItem('favorites', JSON.stringify(favorites));
-        this.renderFavorites();
-    },
+removeFromFav: function(productId) {
+    let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+    favorites = favorites.filter(f => f.id !== productId);
+    localStorage.setItem('favorites', JSON.stringify(favorites));
+    
+    this.renderFavorites();
+    
+    if (window.updateGlobalFavCount) {
+        window.updateGlobalFavCount();
+    }
+},
 
-    moveToCart: function(product) {
-        let cart = JSON.parse(localStorage.getItem('cart')) || [];
-        let existingItem = cart.find(item => item.id === product.id);
-        if (existingItem) {
-            existingItem.quantity += 1;
-        } else {
-            cart.push({ ...product, quantity: 1 });
-        }
-        localStorage.setItem('cart', JSON.stringify(cart));
-        if (window.updateGlobalCartCount) window.updateGlobalCartCount();
-        this.showSuccessMessage(`${product.name} added to cart!`);
-    },
-        showSuccessMessage: function(message) {
-        var notification = document.createElement('div');
-        notification.className = 'success-notification';
-        notification.textContent = message;
-        notification.style.cssText = 'position: fixed; top: 20px; right: 20px; background: green; color: white; padding: 15px 20px; border-radius: 5px; z-index: 9999; box-shadow: 0 4px 12px rgba(0,0,0,0.1);';
-        
-        document.body.appendChild(notification);
 
+showSuccessMessage: function(message) {
+
+    var notification = document.createElement('div');
+    notification.className = 'success-notification';
+    notification.textContent = message;
+    notification.style.cssText = 'position: fixed; top: 20px; right: 20px; background: green; color: white; padding: 15px 20px; border-radius: 5px; z-index: 9999; box-shadow: 0 4px 12px rgba(0,0,0,0.1);';
+    document.body.appendChild(notification);
+
+    setTimeout(function() {
+        notification.style.opacity = '0';
+        notification.style.transition = 'opacity 0.5s ease';
         setTimeout(function() {
-            notification.style.opacity = '0';
-            notification.style.transition = 'opacity 0.5s ease';
-            setTimeout(function() {
-                if (document.body.contains(notification)) {
-                    document.body.removeChild(notification);
-                }
-            }, 500);
-        }, 2500);
+            if (document.body.contains(notification)) {
+                document.body.removeChild(notification);
+            }
+        }, 500);
+    }, 2500);
     },
+
 };

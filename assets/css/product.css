@@ -196,6 +196,12 @@
     font-weight: 600;
 }
 
+.status-badge.out-of-stock {
+    background-color: #ffebee;
+    color: #c62828;
+    border: 1px solid #ffcdd2;
+}
+
 .details-price {
     font-size: 1.8rem;
     font-weight: bold;
@@ -271,4 +277,34 @@
     transform: translateY(-2px);
 }
 
+.main-image {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
 
+.main-image .fav-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: white;
+    border: none;
+    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    transition: transform 0.2s ease;
+    z-index: 10;
+}
+
+.main-image .fav-btn:hover {
+    transform: scale(1.1);
+}
+
+.main-image .fav-btn .material-icons {
+    font-size: 28px;
+}

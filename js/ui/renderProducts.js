@@ -1,3 +1,5 @@
+import { CartService } from "../services/cart.service.js";
+
 export var ProductsUI = {
 
   renderProductsGrid: function(products) {
@@ -68,8 +70,15 @@ addBtn.innerHTML = `
 
 addBtn.onclick = function(e) {
     e.stopPropagation();
-    ProductsUI.addToCart(product, 1);
+    const result = CartService.addToCart(product, 1);
+
+    if(window.updateGlobalCartCount)
+        window.updateGlobalCartCount();
+
+
+    ProductsUI.showStatusMessage(result.message, !result.success);
 };
+
     infoContainer.appendChild(addBtn);
 
     card.appendChild(infoContainer);
@@ -81,36 +90,8 @@ card.onclick = function() {
     return card;
 },
 
-addToCart: function(product, quantity) {
-        var cart = JSON.parse(localStorage.getItem('cart')) || [];
-        var existingItemIndex = -1;
-        
-        for (var i = 0; i < cart.length; i++) {
-            if (cart[i].id === product.id) {
-                existingItemIndex = i;
-                break;
-            }
-        }
-
-        if (existingItemIndex !== -1) {
-            cart[existingItemIndex].quantity += quantity;
-        } else {
-            cart.push({
-                id: product.id,
-                name: product.name,
-                price: product.price,
-                image: product.image || product.imageUrl,
-                quantity: quantity
-            });
-        }
-
-        localStorage.setItem('cart', JSON.stringify(cart));
-        this.updateCartCount();
-        this.showSuccessMessage(`${product.name} added to cart!`);
-    },
-
     updateCartCount: function() {
-        var cart = JSON.parse(localStorage.getItem('cart')) || [];
+        var cart = CartService.getCart();
         var totalItems = 0;
         for (var i = 0; i < cart.length; i++) {
             totalItems += cart[i].quantity;
@@ -125,7 +106,7 @@ addToCart: function(product, quantity) {
         var notification = document.createElement('div');
         notification.className = 'success-notification';
         notification.textContent = message;
-        notification.style.cssText = 'position: fixed; top: 20px; right: 20px; background: #24A5C0; color: white; padding: 15px 20px; border-radius: 5px; z-index: 9999; box-shadow: 0 4px 12px rgba(0,0,0,0.1);';
+        notification.style.cssText = 'position: fixed; top: 20px; right: 20px; background: green; color: white; padding: 15px 20px; border-radius: 5px; z-index: 9999; box-shadow: 0 4px 12px rgba(0,0,0,0.1);';
         
         document.body.appendChild(notification);
 
@@ -180,12 +161,14 @@ renderCategoriesSidebar: function(categories, activeCategoryId) {
         }
 
         if (index === -1) {
-            favorites.push({
-                id: product.id,
-                name: product.name,
-                price: product.price,
-                image: product.image || product.imageUrl
-            });
+        favorites.push({
+            id: product.id,
+            name: product.name,
+            price: product.price,
+            imageUrl: product.imageUrl ,
+            quantity: product.quantity,
+            status: product.status
+        });
             btnElement.innerHTML = '<span class="material-icons" style="color:red">favorite</span>';
             this.showSuccessMessage(`${product.name} added to favorites!`);
         } else {
@@ -195,27 +178,36 @@ renderCategoriesSidebar: function(categories, activeCategoryId) {
         }
 
         localStorage.setItem('favorites', JSON.stringify(favorites));
+        window.updateGlobalFavCount();
     },
 
-    showSuccessMessage: function(message) {
-        var notification = document.createElement('div');
-        notification.className = 'success-notification';
-        notification.textContent = message;
-        notification.style.cssText = 'position: fixed; top: 20px; right: 20px; background: #4CAF50; color: white; padding: 15px 20px; border-radius: 5px; z-index: 9999; box-shadow: 0 4px 12px rgba(0,0,0,0.1);';
-        
-        document.body.appendChild(notification);
+showStatusMessage: function(message, isError = false) {
+    var notification = document.createElement('div');
+    notification.className = 'status-notification';
+    notification.textContent = message;
 
-        setTimeout(function() {
-            notification.style.opacity = '0';
-            notification.style.transition = 'opacity 0.5s ease';
-            setTimeout(function() {
-                if (document.body.contains(notification)) {
-                    document.body.removeChild(notification);
-                }
-            }, 500);
-        }, 2500);
-    },
-  
+    const bgColor = isError ? '#e74c3c' : 'green';
+
+    notification.style.cssText = `
+        position: fixed; 
+        top: 20px; 
+        right: 20px; 
+        background: ${bgColor}; 
+        color: white; 
+        padding: 15px 20px; 
+        border-radius: 5px; 
+        z-index: 9999; 
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        transition: opacity 0.5s ease;
+    `;
+    
+    document.body.appendChild(notification);
+    setTimeout(function() {
+        notification.style.opacity = '0';
+        setTimeout(() => notification.remove(), 500);
+    }, 2500);
+},
+
   showLoading: function() {
     var container = document.querySelector('.products-grid');
     var title = document.getElementById('current-category');

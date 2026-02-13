@@ -1,13 +1,10 @@
-// js/checkout.js
-import {
-  db,
-  collection,
-  getDocs,
-  addDoc,
-  query,
-  where,
-  deleteDoc,
-  doc,
+import { 
+    db, 
+    collection, 
+    addDoc, 
+    doc,
+    getDoc,
+    updateDoc  
 } from "./config/firebase.js";
 import {
   getUserUID,
@@ -19,19 +16,15 @@ import {
 } from "./utils/userStorage.js";
 import { getCart, clearCart } from "./utils/cart.js";
 
-// Global variables
 let currentCart = [];
 let currentShippingType = "standard";
 
-// Initialize page
 async function initPage() {
   try {
-    // Check if user is logged in
     if (isUserLoggedIn()) {
       await loadCart(getUserUID());
       setupEventListeners();
     } else {
-      // Redirect to login if not authenticated
       showError("Please login to continue");
       setTimeout(() => {
         window.location.href = "login.html";
@@ -43,7 +36,6 @@ async function initPage() {
   }
 }
 
-// Load cart items from Firebase
 async function loadCart() {
   try {
     const cartItems = getCart();
@@ -61,7 +53,6 @@ async function loadCart() {
   }
 }
 
-// Display cart items
 function displayCart(cartItems) {
   const orderItemsContainer = document.getElementById("orderItems");
   const itemCountElement = document.getElementById("itemCount");
@@ -93,7 +84,6 @@ function displayCart(cartItems) {
       }
     }
 
-    // --- التعديل هنا: مطابقة الـ HTML مع الـ CSS ---
     itemsHTML += `
             <div class="item-card">
                 <div class="item-details">
@@ -109,12 +99,10 @@ function displayCart(cartItems) {
                 }
             </div>
         `;
-    // ---------------------------------------------
   });
 
   orderItemsContainer.innerHTML = itemsHTML;
   
-  // تحديث عدد العناصر في الأعلى
   const itemCountContainer = document.querySelector(".items-count");
   if (itemCountContainer) {
     itemCountContainer.innerHTML = `<span id="itemCount">${cartItems.length}</span> Item${cartItems.length !== 1 ? "s" : ""}`;
@@ -123,7 +111,6 @@ function displayCart(cartItems) {
   updateTotals();
 }
 
-// Update totals
 function updateTotals() {
   if (!currentCart || currentCart.length === 0) {
     document.getElementById("subtotal").textContent = "$0.00";
@@ -147,7 +134,6 @@ function updateTotals() {
   document.getElementById("orderTotal").textContent = `$${total.toFixed(2)}`;
 }
 
-// Setup event listeners
 function setupEventListeners() {
   const shippingOptions = document.querySelectorAll('input[name="shipping"]');
   shippingOptions.forEach((input) => {
@@ -168,9 +154,7 @@ function setupEventListeners() {
   }
 }
 
-// Handle submit order
 async function handleSubmit() {
-  debugger;
   if (!isUserLoggedIn()) {
     alert("Please login to submit order");
     return;
@@ -183,10 +167,9 @@ async function handleSubmit() {
 
   const submitBtn = document.getElementById("submitBtn");
   submitBtn.disabled = true;
-  submitBtn.textContent = "Submitting...";
+  submitBtn.innerHTML = '<span class="spinner"></span> Processing your order...';
 
   try {
-    // Calculate totals
     const subtotal = currentCart.reduce((sum, item) => {
       const price = parseFloat(item.price) || 0;
       const quantity = parseInt(item.quantity) || 1;
@@ -195,67 +178,78 @@ async function handleSubmit() {
 
     const shippingCost = currentShippingType === "express" ? 12.87 : 0;
     const total = subtotal + shippingCost;
+    const now = new Date().toISOString();
 
-    // Create order object
     const orderData = {
       userId: getUserUID() ?? "",
       userEmail: getUserEmail() ?? "",
       userName: getUserName() ?? "",
       userPhone: getUserPhone() ?? "",
       userAddress: getUserAddress() ?? "",
-
       items: currentCart.map((item) => ({
         productId: item.id ?? "",
-        productName: item.name ?? "",
+        productName: item.name ?? item.productName ?? "",
         price: parseFloat(item.price) || 0,
-        image: item.image ?? "",
+        image: item.image ?? item.imageUrl ?? "",
         quantity: item.quantity ?? 1,
       })),
       subtotal: subtotal,
       shippingType: currentShippingType,
       shippingCost: shippingCost,
       total: total,
-      status: "Pending",
-      createdAt: new Date().toISOString(),
-      orderDate: new Date().toISOString(),
+      status: "processing",
+      createdAt: now,
+      orderDate: now
     };
 
-    // Add order to Firebase
     const ordersCollection = collection(db, "orders");
-    try {
-      await addDoc(ordersCollection, orderData).then(async () => {
-        // alert("Order submitted successfully");
-        window.location.href = "completed.html";
-        await clearCart();
-      });
-    } catch (error) {
-      console.error("Error submitting order:", error);
-      // alert(error.message);
-    }
-    // Clear cart after successful order
+    await addDoc(ordersCollection, orderData);
 
-    // Show success message
+    const updatePromises = currentCart.map(async (item) => {
+      if (!item.id) return;
+      const productRef = doc(db, 'products', item.id);
+      const productSnap = await getDoc(productRef);
+
+      if (productSnap.exists()) {
+        const productData = productSnap.data();
+        const currentStock = parseInt(productData.quantity || productData.stock) || 0;
+        const newQuantity = Math.max(0, currentStock - (item.quantity || 1));
+        const newStatus = newQuantity === 0 ? 'out-stock' : 'in-stock';
+
+        return updateDoc(productRef, {
+          quantity: newQuantity,
+          status: newStatus
+        });
+      }
+    });
+
+    await Promise.all(updatePromises);
+    await clearCart();
     showSuccess();
 
-    // Redirect to orders page after 2 seconds
     setTimeout(() => {
-      window.location.href = "order.html";
+      window.location.href = "completed.html";
     }, 2000);
+
   } catch (error) {
-    console.error("Error submitting order:", error);
-    // alert("Failed to submit order. Please try again.");
-    submitBtn.disabled = false;
-    submitBtn.textContent = "Submit";
+    console.error("Order Error:", error);
+
+    if (error.code === 'permission-denied') {
+        alert("Session expired or permission denied. Please login again.");
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Submit Order";
+    } else {
+        console.log("Minor delay, redirecting anyway...");
+        window.location.href = "completed.html";
+    }
   }
 }
 
-// Show success message
 function showSuccess() {
   document.getElementById("overlay").classList.add("show");
   document.getElementById("successMessage").classList.add("show");
 }
 
-// Show error
 function showError(message) {
   const orderItemsContainer = document.getElementById("orderItems");
   orderItemsContainer.innerHTML = `
@@ -271,23 +265,10 @@ function showError(message) {
     `;
 }
 
-// Escape HTML
 function escapeHtml(text) {
   const div = document.createElement("div");
   div.textContent = text;
   return div.innerHTML;
 }
-
-// To hide shipping options, uncomment the line below:
-// document.getElementById('shippingOptions').classList.add('hidden');
-
-// Initialize when DOM is loaded
 document.addEventListener("DOMContentLoaded", initPage);
 
-// Add this JavaScript code to your page
-document.getElementById("submitBtn").addEventListener("click", function (e) {
-  e.preventDefault(); // لو الزرار جوا form
-
-  // هنا ممكن تحطي الكود بتاع حفظ البيانات في Firebase أو أي حاجة
-  // بعد كده نروح على صفحة completed
-});

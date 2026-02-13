@@ -8,6 +8,7 @@ body {
     line-height: 1.6;
     color: #333;
     background-color: #fff;
+    padding-top: 80px; 
 }
 a {
     text-decoration: none;
@@ -18,40 +19,32 @@ ul {
 }
 
 /* ----------------------- NavBar ------------------------- */
+
 .main-header {
     background-color: #005873;
     color: white;
     padding: 15px 5%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
 }
+
 .navbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
-.logo a {
-    font-size: 28px;
-    font-weight: bold;
-    color: white;
-    text-decoration: none;
-    display: inline-flex;
-    flex-direction: column;
-    align-items: flex-start;
-    line-height: 1;
-}
-.logo-underline {
-    width: 100%;
-    height: auto;  
-    margin-top: 5px;   
-    display: block;   
-}
+
 .search-bar {
     display: flex;
     background: white;
     border-radius: 4px;
     overflow: hidden;
-    flex: 0 1 400px;
-    margin-right: 160px;
+    flex: 0 1 350px;
 }
+
 .search-bar input {
     border: none;
     padding: 10px;
@@ -69,31 +62,8 @@ ul {
     cursor: pointer;
     appearance: none; 
     -webkit-appearance: none;
-    background-image: url('data:image/svg+xml;charset=US-ASCII,<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="gray" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>');
-    background-repeat: no-repeat;
-    background-position: right 8px center;
 }
-.search-bar button {
-    border: none;
-    background: #0B8BA6;
-    color: white;
-    padding: 0 15px;
-    cursor: pointer;
-}
-.material-icons {
-    font-size: 20px;
-    vertical-align: middle;
-}
-#search-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: none;
-    background: #0B8BA6;
-    color: white;
-    padding: 0 15px;
-    cursor: pointer;
-}
+
 .cart-link {
     display: flex;
     align-items: center;
@@ -137,6 +107,53 @@ a.active {
     color: white;
     font-weight: bold; 
     text-decoration: underline;
+}
+
+.logout-menu-item {
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+    list-style: none;
+    cursor: pointer;
+    padding: 10px;
+}
+
+.logout-icon {
+    fill: white;
+    width: 28px; 
+    height: 28px;
+    transition: fill 0.3s ease;
+    pointer-events: none;
+}
+
+.logout-menu-item:hover .logout-icon {
+    fill: #ff4d4d;
+}
+
+.fav-link {
+    position: relative;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #F3F3F3; 
+}
+
+.fav-badge {
+    background-color: #ff4d4d;
+    color: white;
+    font-size: 11px;
+    font-weight: bold;
+    min-width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: -8px;
+    right: -12px; 
+    padding: 2px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
 
 /* ----------------------- Slider ------------------------- */

@@ -3,20 +3,16 @@ import { ProductsUI } from "./renderProducts.js";
 
 export var SearchUI = {
   initSearch: function () {
-    var searchBtn = document.getElementById("search-btn");
     var searchInput = document.getElementById("search-input");
     var categoryFilter = document.getElementById("category-filter");
 
-    if (!searchBtn || !searchInput) {
+    if ( !searchInput) {
       console.log("Search elements not found");
       return;
     }
 
     this.loadCategoriesFilter();
 
-    searchBtn.addEventListener("click", function () {
-      SearchUI.performSearch();
-    });
 
     searchInput.addEventListener("keypress", function (e) {
       if (e.key === "Enter") {
