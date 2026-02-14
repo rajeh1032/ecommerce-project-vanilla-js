@@ -97,7 +97,10 @@ registerSubmitBtn.addEventListener("click", (e) => {
   }
 
   if (!validatePasswordStrong(password)) {
-    showError(registerPassword, "Password must be at least 8 characters with at least one letter and one number");
+    showError(
+      registerPassword,
+      "Password must be at least 8 characters with at least one letter and one number",
+    );
     return;
   }
   if (!firstName) {
@@ -200,7 +203,7 @@ loginSubmitBtn.addEventListener("click", (e) => {
       let role = "user";
       let userName = "";
       let userDocId = "";
-      let userPhone = "";   
+      let userPhone = "";
       let userAddress = "";
 
       if (!snapshot.empty) {
@@ -208,7 +211,7 @@ loginSubmitBtn.addEventListener("click", (e) => {
         role = userData.role;
         userName = userData.name;
         userDocId = snapshot.docs[0].id;
-        userPhone = userData.phone || ""; 
+        userPhone = userData.phone || "";
         userAddress = userData.address || "";
       }
 
@@ -228,7 +231,13 @@ loginSubmitBtn.addEventListener("click", (e) => {
 
 // Auth Change State
 onAuthStateChanged(auth, async (user) => {
-  if (!user) return;
+  if (!user) {
+    const isInPublicFolder = window.location.pathname.includes("/public/");
+    window.location.href = isInPublicFolder
+      ? "login.html"
+      : "public/login.html";
+    return;
+  }
 
   try {
     const email = user.email;
