@@ -203,10 +203,15 @@ window.updateGlobalFavCount = updateFavoritesBadge;
 //ي log out
 const logoutBtn = document.getElementById("logoutBtn");
 logoutBtn.addEventListener("click", async () => {
-  try {
-    await signOut(auth);
-    window.location.href = "public/login.html";
-  } catch (err) {
-    console.error("Sign-out error →", err);
-  }
+  signOut(auth)
+    .then(() => {
+      if (window.location.pathname.includes("index.html")) {
+        window.location.href = "public/login.html";
+      } else {
+        window.location.href = "login.html";
+      }
+    })
+    .catch((error) => {
+      console.error("Logout error:", error);
+    });
 });
