@@ -1,35 +1,49 @@
-import { 
-    db, 
-    collection, 
-    addDoc, 
-    doc,
-    getDoc,
-    updateDoc  
-} from "./config/firebase.js";
 import {
-  getUserUID,
-  getUserEmail,
-  getUserName,
-  getUserPhone,
-  getUserAddress,
-  isUserLoggedIn,
-} from "./utils/userStorage.js";
+  db,
+  auth,
+  onAuthStateChanged,
+  collection,
+  addDoc,
+  doc,
+  getDoc,
+  updateDoc,
+} from "./config/firebase.js";
 import { getCart, clearCart } from "./utils/cart.js";
+import { getCurrentUserData } from "./services/user.service.js";
 
 let currentCart = [];
 let currentShippingType = "standard";
+let currentAuthUser = null;
+let currentUserProfile = null;
+
+function waitForAuthUser() {
+  return new Promise((resolve) => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      unsubscribe();
+      resolve(user);
+    });
+  });
+}
 
 async function initPage() {
   try {
-    if (isUserLoggedIn()) {
-      await loadCart(getUserUID());
-      setupEventListeners();
-    } else {
+    currentAuthUser = auth.currentUser || (await waitForAuthUser());
+    if (!currentAuthUser) {
       showError("Please login to continue");
       setTimeout(() => {
         window.location.href = "login.html";
       }, 2000);
+      return;
     }
+
+    currentUserProfile = await getCurrentUserData();
+    if (!currentUserProfile) {
+      showError("User profile not found. Please login again.");
+      return;
+    }
+
+    await loadCart();
+    setupEventListeners();
   } catch (error) {
     console.error("Error initializing page:", error);
     showError("Failed to load. Please refresh the page.");
@@ -102,7 +116,7 @@ function displayCart(cartItems) {
   });
 
   orderItemsContainer.innerHTML = itemsHTML;
-  
+
   const itemCountContainer = document.querySelector(".items-count");
   if (itemCountContainer) {
     itemCountContainer.innerHTML = `<span id="itemCount">${cartItems.length}</span> Item${cartItems.length !== 1 ? "s" : ""}`;
@@ -155,7 +169,7 @@ function setupEventListeners() {
 }
 
 async function handleSubmit() {
-  if (!isUserLoggedIn()) {
+  if (!currentAuthUser) {
     alert("Please login to submit order");
     return;
   }
@@ -167,7 +181,8 @@ async function handleSubmit() {
 
   const submitBtn = document.getElementById("submitBtn");
   submitBtn.disabled = true;
-  submitBtn.innerHTML = '<span class="spinner"></span> Processing your order...';
+  submitBtn.innerHTML =
+    '<span class="spinner"></span> Processing your order...';
 
   try {
     const subtotal = currentCart.reduce((sum, item) => {
@@ -181,11 +196,11 @@ async function handleSubmit() {
     const now = new Date().toISOString();
 
     const orderData = {
-      userId: getUserUID() ?? "",
-      userEmail: getUserEmail() ?? "",
-      userName: getUserName() ?? "",
-      userPhone: getUserPhone() ?? "",
-      userAddress: getUserAddress() ?? "",
+      userId: currentAuthUser.uid ?? "",
+      userEmail: currentUserProfile?.email ?? currentAuthUser.email ?? "",
+      userName: currentUserProfile?.name ?? "",
+      userPhone: currentUserProfile?.phone ?? "",
+      userAddress: currentUserProfile?.address ?? "",
       items: currentCart.map((item) => ({
         productId: item.id ?? "",
         productName: item.name ?? item.productName ?? "",
@@ -199,7 +214,7 @@ async function handleSubmit() {
       total: total,
       status: "processing",
       createdAt: now,
-      orderDate: now
+      orderDate: now,
     };
 
     const ordersCollection = collection(db, "orders");
@@ -207,40 +222,40 @@ async function handleSubmit() {
 
     const updatePromises = currentCart.map(async (item) => {
       if (!item.id) return;
-      const productRef = doc(db, 'products', item.id);
+      const productRef = doc(db, "products", item.id);
       const productSnap = await getDoc(productRef);
 
       if (productSnap.exists()) {
         const productData = productSnap.data();
-        const currentStock = parseInt(productData.quantity || productData.stock) || 0;
+        const currentStock =
+          parseInt(productData.quantity || productData.stock) || 0;
         const newQuantity = Math.max(0, currentStock - (item.quantity || 1));
-        const newStatus = newQuantity === 0 ? 'out-stock' : 'in-stock';
+        const newStatus = newQuantity === 0 ? "out-stock" : "in-stock";
 
         return updateDoc(productRef, {
           quantity: newQuantity,
-          status: newStatus
+          status: newStatus,
         });
       }
     });
 
     await Promise.all(updatePromises);
-    await clearCart();
+    clearCart();
     showSuccess();
 
     setTimeout(() => {
       window.location.href = "completed.html";
     }, 2000);
-
   } catch (error) {
     console.error("Order Error:", error);
 
-    if (error.code === 'permission-denied') {
-        alert("Session expired or permission denied. Please login again.");
-        submitBtn.disabled = false;
-        submitBtn.textContent = "Submit Order";
+    if (error.code === "permission-denied") {
+      alert("Session expired or permission denied. Please login again.");
+      submitBtn.disabled = false;
+      submitBtn.textContent = "Submit Order";
     } else {
-        console.log("Minor delay, redirecting anyway...");
-        window.location.href = "completed.html";
+      console.log("Minor delay, redirecting anyway...");
+      window.location.href = "completed.html";
     }
   }
 }
@@ -271,4 +286,3 @@ function escapeHtml(text) {
   return div.innerHTML;
 }
 document.addEventListener("DOMContentLoaded", initPage);
-

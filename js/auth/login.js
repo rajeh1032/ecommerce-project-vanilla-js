@@ -2,11 +2,9 @@
 import {
   auth,
   db,
-  collection,
-  addDoc,
-  query,
-  where,
-  getDocs,
+  getDoc,
+  doc,
+  setDoc,
   onAuthStateChanged,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
@@ -138,7 +136,7 @@ registerSubmitBtn.addEventListener("click", (e) => {
       const fullName = `${registerFirstName.value} ${registerLastName.value}`;
 
       // Add user to Firestore
-      const docRef = await addDoc(collection(db, "users"), {
+      await setDoc(doc(db, "users", uid), {
         email: email,
         name: fullName,
         phone: registerPhone.value,
@@ -146,8 +144,6 @@ registerSubmitBtn.addEventListener("click", (e) => {
         role: "user",
         status: "active",
         createdAt: new Date(),
-        updatedAt: new Date(),
-        authUid: uid,
       });
 
       // Store user info in localStorage
@@ -155,7 +151,7 @@ registerSubmitBtn.addEventListener("click", (e) => {
       localStorage.setItem("userEmail", email);
       localStorage.setItem("userRole", "user");
       localStorage.setItem("userName", fullName);
-      localStorage.setItem("userDocId", docRef.id);
+      localStorage.setItem("userDocId", uid);
       localStorage.setItem("userPhone", registerPhone.value);
       localStorage.setItem("userAddress", registerAddress.value);
 
@@ -192,38 +188,25 @@ loginSubmitBtn.addEventListener("click", (e) => {
 
   signInWithEmailAndPassword(auth, email, password)
     .then(async (userCredential) => {
-      const email = userCredential.user.email;
       const uid = userCredential.user.uid;
 
-      // Get user data from Firestore
-      const userRef = collection(db, "users");
-      const q = query(userRef, where("email", "==", email));
-      const snapshot = await getDocs(q);
+      const docRef = doc(db, "users", uid);
+      const docSnap = await getDoc(docRef);
 
       let role = "user";
       let userName = "";
-      let userDocId = "";
       let userPhone = "";
       let userAddress = "";
 
-      if (!snapshot.empty) {
-        const userData = snapshot.docs[0].data();
+      if (docSnap.exists()) {
+        const userData = docSnap.data();
         role = userData.role;
         userName = userData.name;
-        userDocId = snapshot.docs[0].id;
         userPhone = userData.phone || "";
         userAddress = userData.address || "";
       }
-
-      // Store user info in localStorage
-      localStorage.setItem("userUID", uid);
-      localStorage.setItem("userEmail", email);
-      localStorage.setItem("userRole", role);
-      localStorage.setItem("userName", userName);
-      localStorage.setItem("userDocId", userDocId);
-      localStorage.setItem("userPhone", userPhone);
-      localStorage.setItem("userAddress", userAddress);
     })
+
     .catch((error) => {
       showError(loginEmail, error.message);
     });
@@ -232,30 +215,48 @@ loginSubmitBtn.addEventListener("click", (e) => {
 // Auth Change State
 onAuthStateChanged(auth, async (user) => {
   if (!user) {
-    const isInPublicFolder = window.location.pathname.includes("/public/");
-    window.location.href = isInPublicFolder
-      ? "login.html"
-      : "public/login.html";
+    if (!window.location.pathname.includes("login.html")) {
+      window.location.href = "login.html";
+    }
     return;
   }
 
   try {
-    const email = user.email;
-    const q = query(collection(db, "users"), where("email", "==", email));
-    const snapshot = await getDocs(q);
     let role = "user";
-    if (!snapshot.empty) {
-      role = snapshot.docs[0].data().role;
+    const userDocRef = doc(db, "users", user.uid);
+    const userDocSnap = await getDoc(userDocRef);
+    if (userDocSnap.exists()) {
+      role = userDocSnap.data().role || "user";
     }
+
     if (role === "admin") {
-      window.location.href = "../admin/dashboard.html";
+      if (!window.location.pathname.includes("dashboard.html")) {
+        window.location.href = "../admin/dashboard.html";
+      }
     } else {
-      window.location.href = "../index.html";
+      if (!window.location.pathname.includes("index.html")) {
+        window.location.href = "../index.html";
+      }
     }
   } catch (error) {
     console.error("Error fetching user data:", error);
   }
+  const data = await getCurrentUserData();
+  console.log("Current user data:", data);
 });
+export async function getCurrentUserData() {
+  const user = auth.currentUser;
+  if (!user) return null;
+
+  const docRef = doc(db, "users", user.uid);
+  const docSnap = await getDoc(docRef);
+
+  if (docSnap.exists()) {
+    return docSnap.data();
+  }
+
+  return null;
+}
 
 // Login - Signup animation
 let loginBtn = document.getElementById("loginBtn");

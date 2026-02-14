@@ -6,8 +6,25 @@ import { CartUI } from "./ui/renderCart.js";
 import { ProductDetailsService } from "./services/product-details.service.js";
 import { ProductDetailsUI } from "./ui/renderProductDetails.js";
 import { SearchUI } from "./ui/renderSearch.js";
-import { auth, signOut } from "./config/firebase.js";
+import { auth, signOut, onAuthStateChanged } from "./config/firebase.js";
 import { CartService } from "./services/cart.service.js";
+import { getCurrentUserData } from "./services/user.service.js";
+
+function getLoginPath() {
+  const isInPublicFolder = window.location.pathname.includes("/public/");
+  return isInPublicFolder ? "login.html" : "public/login.html";
+}
+
+onAuthStateChanged(auth, async (user) => {
+  if (!user) {
+    localStorage.clear();
+    window.location.replace(getLoginPath());
+    return;
+  }
+
+  const data = await getCurrentUserData();
+  console.log("Current user data:", data);
+});
 
 window.onload = function () {
   if (document.querySelector(".categories-grid")) {
@@ -183,6 +200,10 @@ function updateCartBadge() {
 }
 
 document.addEventListener("DOMContentLoaded", updateCartBadge);
+window.addEventListener("cart:updated", () => {
+  updateCartBadge();
+  CartUI.renderCart();
+});
 window.updateGlobalCartCount = updateCartBadge;
 
 function updateFavoritesBadge() {
@@ -198,19 +219,17 @@ function updateFavoritesBadge() {
 }
 document.addEventListener("DOMContentLoaded", updateFavoritesBadge);
 window.updateGlobalFavCount = updateFavoritesBadge;
-
 //ي log out
 const logoutBtn = document.getElementById("logoutBtn");
-logoutBtn.addEventListener("click", async () => {
-  signOut(auth)
-    .then(() => {
-      const isInPublicFolder = window.location.pathname.includes("/public/");
-      window.location.href = isInPublicFolder
-        ? "login.html"
-        : "public/login.html";
-      // localStorage.clear();
-    })
-    .catch((error) => {
-      console.error("Logout error:", error);
-    });
-});
+if (logoutBtn) {
+  logoutBtn.addEventListener("click", async () => {
+    signOut(auth)
+      .then(() => {
+        localStorage.clear();
+        window.location.replace(getLoginPath());
+      })
+      .catch((error) => {
+        console.error("Logout error:", error);
+      });
+  });
+}
