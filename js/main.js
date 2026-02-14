@@ -200,7 +200,7 @@ function updateFavoritesBadge() {
 document.addEventListener("DOMContentLoaded", updateFavoritesBadge);
 window.updateGlobalFavCount = updateFavoritesBadge;
 
-// log out
+//ي log out
 const logoutBtn = document.getElementById("logoutBtn");
 logoutBtn.addEventListener("click", async () => {
   try {
