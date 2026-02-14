@@ -205,11 +205,10 @@ const logoutBtn = document.getElementById("logoutBtn");
 logoutBtn.addEventListener("click", async () => {
   signOut(auth)
     .then(() => {
-      if (window.location.pathname.includes("index.html")) {
-        window.location.href = "public/login.html";
-      } else {
-        window.location.href = "login.html";
-      }
+      const isInPublicFolder = window.location.pathname.includes("/public/");
+      window.location.href = isInPublicFolder
+        ? "login.html"
+        : "public/login.html";
     })
     .catch((error) => {
       console.error("Logout error:", error);
