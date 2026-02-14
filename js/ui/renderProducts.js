@@ -208,15 +208,15 @@ showStatusMessage: function(message, isError = false) {
     }, 2500);
 },
 
-  showLoading: function() {
+showLoading: function() {
     var container = document.querySelector('.products-grid');
     var title = document.getElementById('current-category');
     
-    if (title) title.textContent = 'Loading...'; 
+    if (title) title.textContent = 'All Products'; 
     if (container) {
-      container.innerHTML = '<p class="loading-text" style="grid-column: 1/-1; text-align: center;">Loading products...</p>';
+        container.innerHTML = '<div class="loader-wrapper"><div class="spinner"></div></div>';
     }
-  }
+}
 
 };
 

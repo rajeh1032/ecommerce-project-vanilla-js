@@ -151,6 +151,29 @@
     fill: #F3F3F3;
 }
 
+.loader-wrapper {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 50px 0;
+    width: 100%;
+}
+
+.spinner {
+    width: 45px;
+    height: 45px;
+    border: 5px solid rgba(0, 88, 115, 0.1);
+    border-top: 5px solid #005873;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
 /* -------------------Product Details page CSS----------------------- */
 
 .product-main-info {

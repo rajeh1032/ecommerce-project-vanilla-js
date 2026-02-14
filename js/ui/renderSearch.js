@@ -58,12 +58,11 @@ export var SearchUI = {
     }
   },
 
-  searchAndDisplay: function (searchTerm, categoryId) {
+searchAndDisplay: function (searchTerm, categoryId) {
     var productsGrid = document.querySelector(".products-grid");
     if (!productsGrid) return;
 
-    productsGrid.innerHTML =
-      '<p class="loading-text" style="grid-column: 1/-1; text-align: center;">Searching...</p>';
+    productsGrid.innerHTML = '<div class="loader-wrapper"><div class="spinner"></div></div>';
 
     var titleElement = document.getElementById("current-category");
     if (titleElement) {

@@ -292,10 +292,11 @@ a.active {
 
 #categories-container {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(250px, 250px));     
+    justify-content: center; 
     gap: 25px;
     padding: 20px 0;
-    
+    width: 100%;
 }
 
 .category-card {
@@ -303,9 +304,11 @@ a.active {
     border-radius: 15px;
     padding: 15px;
     text-align: center;
-    box-shadow: 20px rgba(0,0,0,0.05);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
     transition: 0.3s;
     cursor: pointer;
+    width: 100%; 
+    box-sizing: border-box; 
 }
 
 .category-card:hover {
@@ -337,6 +340,29 @@ a.active {
 .category-desc {
     font-size: 14px;
     color: #888;
+    margin-top: auto;
+}
+
+#categories-container.loading-state {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 200px;
+    width: 100%;
+}
+
+.spinner {
+    width: 45px;
+    height: 45px;
+    border: 5px solid rgba(0, 95, 115, 0.1); 
+    border-top: 5px solid #005f73;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
 
 /* ----------------------- Footer ------------------------- */

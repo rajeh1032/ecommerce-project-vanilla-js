@@ -66,12 +66,22 @@ export var CategoriesUI = {
     }
   },
   
-  showLoading: function() {
+showLoading: function() {
     var container = document.getElementById('categories-container');
     if (container) {
-      container.innerHTML = '<p class="loading">Loading categories...</p>';
+        container.classList.add('loading-state');
+        container.innerHTML = '<div class="spinner"></div>';
+    }
+},
+
+hideLoading: function() {
+    var container = document.getElementById('categories-container');
+    if (container) {
+        container.classList.remove('loading-state');
     }
   },
+
+
   showError: function(message) {
     var container = document.getElementById('categories-container');
     if (container) {
