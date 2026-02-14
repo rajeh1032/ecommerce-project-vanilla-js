@@ -205,7 +205,7 @@ const logoutBtn = document.getElementById("logoutBtn");
 logoutBtn.addEventListener("click", async () => {
   try {
     await signOut(auth);
-    window.location.href = window.location.origin + "public/login.html";
+    window.location.href = "public/login.html";
   } catch (err) {
     console.error("Sign-out error →", err);
   }
