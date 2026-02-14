@@ -6,8 +6,7 @@ import { CartUI } from "./ui/renderCart.js";
 import { ProductDetailsService } from "./services/product-details.service.js";
 import { ProductDetailsUI } from "./ui/renderProductDetails.js";
 import { SearchUI } from "./ui/renderSearch.js";
-import { auth } from "./config/firebase.js";
-import { signOut } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth.js";
+import { auth, signOut } from "./config/firebase.js";
 import { CartService } from "./services/cart.service.js";
 
 window.onload = function () {
@@ -209,6 +208,7 @@ logoutBtn.addEventListener("click", async () => {
       window.location.href = isInPublicFolder
         ? "login.html"
         : "public/login.html";
+      // localStorage.clear();
     })
     .catch((error) => {
       console.error("Logout error:", error);
