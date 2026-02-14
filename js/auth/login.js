@@ -31,19 +31,16 @@ function validateEmail(email) {
   return emailRegex.test(email);
 }
 function validateName(name) {
-  // حروف فقط + مسافات، وطول ≥ 2
   const nameRegex = /^[A-Za-z\u0600-\u06FF ]{2,}$/;
   return nameRegex.test(name.trim());
 }
 
 function validatePhone(phone) {
-  // مصري: 010 / 011 / 012 / 015 + 8 أرقام
   const phoneRegex = /^(010|011|012|015)[0-9]{8}$/;
   return phoneRegex.test(phone);
 }
 
 function validatePasswordStrong(password) {
-  // 8 حروف على الأقل + حرف + رقم
   const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d).{8,}$/;
   return passwordRegex.test(password);
 }

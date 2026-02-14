@@ -11,11 +11,11 @@ import { signOut } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth
 import { CartService } from "./services/cart.service.js";
 
 window.onload = function () {
-  if(document.querySelector(".categories-grid")){
-      CategoriesUI.showLoading();
-      CategoryService.getAllCategories(function (categories) {
-        CategoriesUI.renderCategoriesGrid(categories);
-      });
+  if (document.querySelector(".categories-grid")) {
+    CategoriesUI.showLoading();
+    CategoryService.getAllCategories(function (categories) {
+      CategoriesUI.renderCategoriesGrid(categories);
+    });
   }
 };
 
@@ -47,7 +47,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
       }
     }
-
   }
 
   // cart
@@ -55,7 +54,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const orderBtn = document.querySelector(".order");
   if (orderBtn) {
     orderBtn.addEventListener("click", () => {
-      const cart = CartService.getCart()
+      const cart = CartService.getCart();
       if (cart.length > 0) {
         CartUI.renderCart();
       }
@@ -147,19 +146,23 @@ document.addEventListener("DOMContentLoaded", function () {
     slides[currentIndex].classList.add("active");
   }
 
-  document.getElementById("nextBtn").addEventListener("click", () => showSlide(currentIndex + 1));
-  document.getElementById("prevBtn").addEventListener("click", () => showSlide(currentIndex - 1));
+  document
+    .getElementById("nextBtn")
+    .addEventListener("click", () => showSlide(currentIndex + 1));
+  document
+    .getElementById("prevBtn")
+    .addEventListener("click", () => showSlide(currentIndex - 1));
 
   setInterval(() => showSlide(currentIndex + 1), 3000);
 });
 
-window.changeQty = function(index, delta) {
+window.changeQty = function (index, delta) {
   CartService.changeQty(index, delta);
   CartUI.renderCart();
   updateCartBadge();
 };
 
-window.removeFromCart = function(index) {
+window.removeFromCart = function (index) {
   CartService.removeItem(index);
   CartUI.renderCart();
   updateCartBadge();
@@ -185,7 +188,7 @@ window.updateGlobalCartCount = updateCartBadge;
 
 function updateFavoritesBadge() {
   const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
-  
+
   const totalFavs = favorites.length;
   const favBadge = document.getElementById("fav-count");
 
@@ -197,14 +200,12 @@ function updateFavoritesBadge() {
 document.addEventListener("DOMContentLoaded", updateFavoritesBadge);
 window.updateGlobalFavCount = updateFavoritesBadge;
 
-
-
-// log out 
+//ي log out
 const logoutBtn = document.getElementById("logoutBtn");
 logoutBtn.addEventListener("click", async () => {
   try {
     await signOut(auth);
-    window.location.href = window.location.origin + "/public/login.html";
+    window.location.href = "public/login.html";
   } catch (err) {
     console.error("Sign-out error →", err);
   }
